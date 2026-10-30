@@ -1,0 +1,1130 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>KROVLYA GROZNY 95</title>
+<meta name="theme-color" content="#2c3135">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Кровля 95">
+<meta name="format-detection" content="telephone=no">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<link rel="icon" type="image/png" href="icons/icon-192.png">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=Unbounded:wght@600;700&display=swap" media="print" onload="this.media='all'">
+<style>
+:root{padding-top:env(safe-area-inset-top,0px)}
+/* Раскладка: одна колонка до 640px, шапка-«жесть» RAL 7024 сверху, таб-бар снизу, итог над таб-баром */
+:root {
+  --bg: #e9ecea;
+  --surface: #ffffff;
+  --surface-2: #f3f5f3;
+  --line: #d3d8d5;
+  --fg: #1d2225;
+  --muted: #5d666b;
+  --band: #2c3135;
+  --band-fg: #f1f3f2;
+  --accent: #f2b705;
+  --on-accent: #1d2225;
+  --accent-ink: #7a5800;
+  --danger: #b8322a;
+  --ok: #2a7a4c;
+  --display: "Unbounded", "Arial Black", -apple-system, system-ui, sans-serif;
+  --body: "Onest", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --r: 12px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #141719; --surface: #1e2225; --surface-2: #272c30; --line: #343b40;
+    --fg: #eceeed; --muted: #9aa3a8; --band: #0d0f10; --band-fg: #eceeed;
+    --accent: #f5c02a; --on-accent: #16191b; --accent-ink: #f5c02a;
+    --danger: #ff7166; --ok: #5ccb8d; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #141719; --surface: #1e2225; --surface-2: #272c30; --line: #343b40;
+  --fg: #eceeed; --muted: #9aa3a8; --band: #0d0f10; --band-fg: #eceeed;
+  --accent: #f5c02a; --on-accent: #16191b; --accent-ink: #f5c02a;
+  --danger: #ff7166; --ok: #5ccb8d; color-scheme: dark;
+}
+
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+[hidden] { display: none !important; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--body);
+  font-size: 16px;
+  line-height: 1.4;
+  font-variant-numeric: tabular-nums;
+}
+body::before {
+  content: ""; position: fixed; top: 0; left: 0; right: 0;
+  height: env(safe-area-inset-top, 0px); background: var(--band); z-index: 30;
+}
+button, input, select, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; touch-action: manipulation; }
+
+/* ---------- шапка ---------- */
+.band {
+  background: var(--band);
+  color: var(--band-fg);
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-top: 14px;
+  padding-bottom: 14px;
+}
+.band-in { max-width: 640px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; }
+.brand { font-family: var(--display); font-weight: 700; font-size: 17px; letter-spacing: 0.02em; line-height: 1.1; }
+.brand b { color: var(--accent); font-weight: 700; }
+.brand small { display: block; font-family: var(--body); font-weight: 500; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.7; margin-top: 3px; }
+.band .num { font-size: 13px; opacity: 0.8; text-align: right; }
+
+/* ---------- контент ---------- */
+.wrap {
+  max-width: 640px; margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-top: 16px;
+  padding-bottom: calc(150px + env(safe-area-inset-bottom, 0px));
+}
+.view { display: grid; grid-gap: 14px; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 14px; }
+.card > h2, .sec-title {
+  margin: 0 0 12px; font-size: 12px; font-weight: 700; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--muted);
+}
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; grid-gap: 10px; }
+.grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; grid-gap: 10px; }
+.stack { display: grid; grid-gap: 10px; }
+.field { display: block; min-width: 0; }
+.field > span { display: block; font-size: 13px; color: var(--muted); margin-bottom: 4px; }
+.inp {
+  width: 100%; min-height: 46px; padding: 10px 12px;
+  border: 1px solid var(--line); border-radius: 10px;
+  background: var(--surface-2); font-size: 17px;
+  -webkit-appearance: none; appearance: none; border-radius: 10px;
+}
+.inp:focus { outline: 2px solid var(--accent); outline-offset: 0; border-color: transparent; }
+.inp[readonly] { background: transparent; color: var(--muted); }
+select.inp { background-image: linear-gradient(45deg, transparent 50%, var(--muted) 50%), linear-gradient(135deg, var(--muted) 50%, transparent 50%); background-position: calc(100% - 18px) 20px, calc(100% - 13px) 20px; background-size: 5px 5px; background-repeat: no-repeat; padding-right: 32px; }
+textarea.inp { min-height: 90px; font-size: 13px; font-family: ui-monospace, Menlo, monospace; }
+.unit { color: var(--muted); font-size: 14px; }
+
+/* сегментированный выбор */
+.seg { display: grid; grid-gap: 6px; }
+.seg.c4 { grid-template-columns: 1fr 1fr; }
+.seg.c3 { grid-template-columns: 1fr 1fr 1fr; }
+.seg button {
+  min-height: 48px; padding: 8px 6px; border-radius: 10px;
+  border: 1px solid var(--line); background: var(--surface-2);
+  font-size: 14px; font-weight: 600; line-height: 1.15;
+  display: flex; align-items: center; justify-content: center; text-align: center;
+}
+.seg button svg { width: 30px; height: 20px; margin-right: 6px; flex: none; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linejoin: round; }
+.seg button[aria-pressed="true"] { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
+
+/* переключатели */
+.tgl { display: flex; align-items: center; justify-content: space-between; min-height: 48px; border-top: 1px solid var(--line); }
+.tgl:first-of-type { border-top: 0; }
+.tgl label { flex: 1; font-weight: 600; padding: 10px 0; }
+.tgl small { display: block; font-weight: 400; color: var(--muted); font-size: 13px; }
+.sw { position: relative; width: 52px; height: 32px; flex: none; }
+.sw input { position: absolute; opacity: 0; width: 100%; height: 100%; margin: 0; cursor: pointer; z-index: 2; }
+.sw i { position: absolute; top: 0; left: 0; right: 0; bottom: 0; border-radius: 16px; background: var(--line); transition: background .15s; }
+.sw i::after { content: ""; position: absolute; top: 3px; left: 3px; width: 26px; height: 26px; border-radius: 50%; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,.25); transition: transform .15s; }
+.sw input:checked + i { background: var(--ok); }
+.sw input:checked + i::after { transform: translateX(20px); }
+.sw input:focus-visible + i { outline: 2px solid var(--accent); outline-offset: 2px; }
+.sub { padding: 0 0 12px; }
+
+/* кнопки */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 48px; padding: 10px 16px; border-radius: 12px;
+  border: 1px solid var(--line); background: var(--surface); font-weight: 600; font-size: 15px;
+}
+.btn.primary { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
+.btn.dark { background: var(--band); color: var(--band-fg); border-color: var(--band); }
+.btn.ghost { background: transparent; }
+.btn.small { min-height: 38px; padding: 6px 12px; font-size: 14px; border-radius: 10px; }
+.btn.danger { color: var(--danger); }
+.btn.armed { background: var(--danger); color: #fff; border-color: var(--danger); }
+.btn:active { transform: scale(0.98); }
+.btn:focus-visible, .seg button:focus-visible, .tab:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.row-btns { display: grid; grid-template-columns: 1fr 1fr; grid-gap: 8px; }
+.row-btns.c3 { grid-template-columns: 1fr 1fr 1fr; }
+.full { width: 100%; }
+
+/* расчёт геометрии */
+.geo { display: grid; grid-template-columns: 1fr 1fr; grid-gap: 12px 10px; }
+.geo .big { grid-column: 1 / -1; }
+.kv span { display: block; font-size: 12px; color: var(--muted); }
+.kv strong { font-size: 18px; }
+.kv.big strong { font-family: var(--display); font-size: 30px; font-weight: 600; letter-spacing: -0.01em; }
+.hint { font-size: 13px; color: var(--muted); margin: 10px 0 0; }
+.warn { font-size: 14px; color: var(--danger); margin: 8px 0 0; font-weight: 600; }
+
+/* прямоугольники сложной кровли */
+.rect { display: grid; grid-template-columns: 26px 1fr 1fr 44px; grid-gap: 8px; align-items: end; }
+.rect .n { font-weight: 700; color: var(--muted); padding-bottom: 12px; }
+.icon-btn { width: 44px; height: 46px; border-radius: 10px; border: 1px solid var(--line); background: var(--surface); font-size: 20px; line-height: 1; color: var(--muted); }
+
+/* итог внизу */
+.totalbar {
+  position: fixed; left: 0; right: 0;
+  bottom: calc(60px + env(safe-area-inset-bottom, 0px));
+  padding-left: max(12px, env(safe-area-inset-left, 0px));
+  padding-right: max(12px, env(safe-area-inset-right, 0px));
+  z-index: 20; pointer-events: none;
+}
+.totalbar-in {
+  pointer-events: auto; max-width: 640px; margin: 0 auto 8px;
+  background: var(--band); color: var(--band-fg); border-radius: 14px;
+  padding: 8px 8px 8px 16px; display: flex; align-items: center; justify-content: space-between;
+  box-shadow: 0 6px 20px rgba(0,0,0,.25);
+}
+.totalbar small { display: block; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; opacity: .7; }
+.totalbar strong { font-family: var(--display); font-size: 20px; font-weight: 600; white-space: nowrap; }
+
+/* таб-бар */
+.tabs {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 25;
+  background: var(--surface); border-top: 1px solid var(--line);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  padding-left: env(safe-area-inset-left, 0px);
+  padding-right: env(safe-area-inset-right, 0px);
+}
+.tabs-in { display: grid; grid-template-columns: repeat(4, 1fr); max-width: 640px; margin: 0 auto; }
+.tab {
+  height: 60px; border: 0; background: transparent; color: var(--muted);
+  font-size: 11px; font-weight: 600; display: flex; flex-direction: column; align-items: center; justify-content: center;
+}
+.tab svg { width: 24px; height: 24px; margin-bottom: 3px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.tab[aria-selected="true"] { color: var(--fg); }
+.tab[aria-selected="true"] svg { stroke: var(--accent-ink); }
+
+/* смета */
+.doc-head { display: grid; grid-gap: 4px; }
+.doc-head h1 { font-family: var(--display); font-size: 20px; font-weight: 600; margin: 0; text-wrap: balance; }
+.doc-meta { color: var(--muted); font-size: 14px; }
+.lines { width: 100%; border-collapse: collapse; }
+.lines th { text-align: left; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); font-weight: 700; padding: 6px 0; border-bottom: 1px solid var(--line); }
+.lines td { padding: 9px 0; border-bottom: 1px solid var(--line); vertical-align: top; font-size: 14px; }
+.lines .grp td { padding-top: 16px; font-weight: 700; font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase; border-bottom: 2px solid var(--fg); }
+.lines .c-q { width: 92px; text-align: right; padding-left: 8px; }
+.lines .c-s { width: 92px; text-align: right; padding-left: 8px; font-weight: 600; white-space: nowrap; }
+.lines .c-x { width: 34px; text-align: right; }
+.lines .price { display: block; color: var(--muted); font-size: 12px; margin-top: 2px; }
+.lines .qinp { width: 70px; min-height: 36px; padding: 4px 6px; text-align: right; font-size: 15px; border-radius: 8px; border: 1px solid var(--line); background: var(--surface-2); -webkit-appearance: none; }
+.lines .qinp.changed { border-color: var(--accent); background: var(--surface); }
+.lines .u { display: block; font-size: 12px; color: var(--muted); }
+.lines .off td { opacity: 0.45; }
+.lines .off .c-s { text-decoration: line-through; }
+.x-btn { width: 32px; height: 32px; border: 0; background: transparent; color: var(--muted); font-size: 18px; border-radius: 8px; }
+.sum-row { display: flex; justify-content: space-between; padding: 6px 0; font-size: 15px; }
+.sum-row.grand { border-top: 2px solid var(--fg); margin-top: 6px; padding-top: 12px; font-size: 16px; font-weight: 700; align-items: baseline; }
+.sum-row.grand strong { font-family: var(--display); font-size: 26px; font-weight: 600; }
+.pv { display: none; }
+.print-only { display: none; }
+.extra-form { display: grid; grid-template-columns: 1fr 1fr 1fr; grid-gap: 8px; }
+.extra-form .name { grid-column: 1 / -1; }
+
+/* цены */
+.cat-title { margin: 6px 0 2px; font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+.pitem { display: grid; grid-template-columns: 1fr 104px; grid-gap: 8px; align-items: center; padding: 8px 0; border-top: 1px solid var(--line); }
+.pitem .nm { min-width: 0; text-align: left; border: 0; background: transparent; padding: 4px 0; font-size: 15px; }
+.pitem .nm small { display: block; color: var(--muted); font-size: 12px; margin-top: 2px; }
+.pitem .pr { position: relative; }
+.pitem .pr .inp { min-height: 42px; text-align: right; padding-right: 26px; font-size: 16px; }
+.pitem .pr em { position: absolute; right: 9px; top: 11px; font-style: normal; color: var(--muted); font-size: 14px; }
+.pedit { grid-column: 1 / -1; background: var(--surface-2); border-radius: 10px; padding: 12px; display: grid; grid-gap: 10px; }
+.pedit .inp { background: var(--surface); }
+.chk { display: flex; align-items: center; font-size: 15px; }
+.chk input { width: 22px; height: 22px; margin: 0 8px 0 0; accent-color: var(--ok); }
+.note { font-size: 13px; color: var(--muted); margin: 0; }
+.note b { color: var(--fg); }
+
+/* архив */
+.arch { display: grid; grid-gap: 10px; }
+.aitem { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 12px 14px; display: grid; grid-gap: 8px; }
+.aitem .top { display: flex; justify-content: space-between; align-items: baseline; }
+.aitem .top strong { font-size: 16px; }
+.aitem .top span { font-family: var(--display); font-weight: 600; font-size: 17px; white-space: nowrap; margin-left: 10px; }
+.aitem .meta { color: var(--muted); font-size: 13px; }
+.empty { text-align: center; color: var(--muted); padding: 30px 10px; }
+.empty strong { display: block; color: var(--fg); font-size: 16px; margin-bottom: 4px; }
+
+/* уведомление */
+.toast {
+  position: fixed; left: 50%; top: calc(env(safe-area-inset-top, 0px) + 12px);
+  transform: translateX(-50%); z-index: 50; background: var(--band); color: var(--band-fg);
+  padding: 10px 16px; border-radius: 12px; font-weight: 600; font-size: 14px; max-width: 90%;
+  box-shadow: 0 6px 20px rgba(0,0,0,.3);
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+@media (max-width: 360px) { .seg.c3 { grid-template-columns: 1fr; } .grid3 { grid-template-columns: 1fr 1fr; } }
+
+/* ---------- печать: только смета, как бланк ---------- */
+@media print {
+  @page { size: A4; margin: 12mm; }
+  :root { --bg: #fff; --surface: #fff; --fg: #000; --muted: #444; --line: #bbb; --band: #fff; --band-fg: #000; }
+  body { background: #fff; color: #000; font-size: 12px; }
+  body::before, .tabs, .totalbar, .toast, [data-noprint], .view:not(.v-quote) { display: none !important; }
+  .wrap { padding: 0 !important; max-width: none; }
+  .band { padding: 0 0 8px; border-bottom: 2px solid #000; }
+  .brand b { color: #000; }
+  .card { border: 0; padding: 0; }
+  .qinp, .x-btn, .lines .c-x { display: none !important; }
+  .pv { display: inline; }
+  .print-only { display: block; }
+  .lines .off { display: none; }
+  .lines td { font-size: 12px; padding: 5px 0; }
+  .sign { display: grid !important; grid-template-columns: 1fr 1fr; grid-gap: 40px; margin-top: 40px; }
+  .sign div { border-top: 1px solid #000; padding-top: 4px; font-size: 11px; }
+}
+
+</style>
+</head>
+<body>
+<header class="band">
+  <div class="band-in">
+    <div class="brand" id="brandName">KROVLYA <b>GROZNY 95</b><small>Смета кровли</small></div>
+    <div class="num" id="bandNum"></div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- ================= ОБЪЕКТ ================= -->
+  <section class="view v-object" id="v-object">
+
+    <div class="card">
+      <h2>Заказчик</h2>
+      <div class="stack">
+        <label class="field"><span>Имя</span><input class="inp" id="f-client" data-f="client" type="text" autocomplete="off" placeholder="Например, Ахмед"></label>
+        <div class="grid2">
+          <label class="field"><span>Телефон</span><input class="inp" id="f-phone" data-f="phone" type="tel" autocomplete="off" placeholder="8 9__ ___-__-__"></label>
+          <label class="field"><span>Адрес</span><input class="inp" id="f-address" data-f="address" type="text" autocomplete="off" placeholder="Село, улица"></label>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Кровля</h2>
+      <div class="stack">
+        <div class="seg c4" data-seg="roofType" role="group" aria-label="Тип кровли">
+          <button type="button" data-act="seg" data-f="roofType" data-val="gable"><svg viewBox="0 0 30 20"><path d="M2 17 L15 4 L28 17 Z"/></svg>Двускатная</button>
+          <button type="button" data-act="seg" data-f="roofType" data-val="hip"><svg viewBox="0 0 30 20"><path d="M2 17 L10 5 L20 5 L28 17 Z M10 5 L2 17 M20 5 L28 17"/></svg>Вальмовая</button>
+          <button type="button" data-act="seg" data-f="roofType" data-val="shed"><svg viewBox="0 0 30 20"><path d="M2 17 L28 6 L28 17 Z"/></svg>Односкатная</button>
+          <button type="button" data-act="seg" data-f="roofType" data-val="complex"><svg viewBox="0 0 30 20"><path d="M2 17 L8 7 L16 7 L16 11 L22 11 L28 17 Z"/></svg>Сложная</button>
+        </div>
+        <div class="seg c3" data-seg="cover" role="group" aria-label="Покрытие">
+          <button type="button" data-act="seg" data-f="cover" data-val="metal">Металло&shy;черепица</button>
+          <button type="button" data-act="seg" data-f="cover" data-val="prof">Профнастил</button>
+          <button type="button" data-act="seg" data-f="cover" data-val="soft">Гибкая черепица</button>
+        </div>
+        <div class="grid2">
+          <label class="field"><span>Уклон, градусов</span><input class="inp" id="f-angle" data-f="angle" type="text" inputmode="decimal" autocomplete="off"></label>
+          <label class="field"><span>Свес, м</span><input class="inp" id="f-overhang" data-f="overhang" type="text" inputmode="decimal" autocomplete="off"></label>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Размеры дома по стенам</h2>
+      <div id="simpleDims" class="grid2">
+        <label class="field"><span id="lblLength">Длина, м</span><input class="inp" id="f-length" data-f="length" type="text" inputmode="decimal" autocomplete="off"></label>
+        <label class="field"><span id="lblWidth">Ширина, м</span><input class="inp" id="f-width" data-f="width" type="text" inputmode="decimal" autocomplete="off"></label>
+      </div>
+      <div id="complexDims" class="stack" hidden>
+        <p class="note">Разбейте план на прямоугольники без наложений. Пример: Г-образный дом = 2 части.</p>
+        <div id="rects" class="stack"></div>
+        <button type="button" class="btn small ghost" data-act="rect-add">+ Добавить часть</button>
+        <label class="field"><span>Периметр стен, м</span><input class="inp" id="f-perimeter" data-f="perimeter" type="text" inputmode="decimal" autocomplete="off" placeholder="Сумма всех наружных стен"></label>
+      </div>
+    </div>
+
+    <div class="card" id="geoCard">
+      <h2>Расчёт площади</h2>
+      <div class="geo">
+        <div class="kv big"><span>Площадь скатов</span><strong id="g-area">—</strong></div>
+        <div class="kv"><span>По плану со свесами</span><strong id="g-plan">—</strong></div>
+        <div class="kv"><span>Подъём конька</span><strong id="g-rise">—</strong></div>
+        <div class="kv"><span>Длина ската</span><strong id="g-slope">—</strong></div>
+        <div class="kv"><span>Подшивка свесов</span><strong id="g-soffit">—</strong></div>
+      </div>
+      <p class="warn" id="g-warn" hidden></p>
+      <p class="hint">Площадь скатов = площадь по плану ÷ cos(уклон). Формула точная, когда все скаты имеют одинаковый уклон.</p>
+    </div>
+
+    <div class="card">
+      <h2>Погонаж, м.п.</h2>
+      <div class="tgl" id="manualRow"><label for="f-manualLen">Задать вручную<small>Например, по чертежу</small></label><span class="sw"><input type="checkbox" id="f-manualLen" data-f="manualLen"><i></i></span></div>
+      <div class="grid3" style="margin-top:8px">
+        <label class="field"><span>Конёк</span><input class="inp" id="len-ridge" data-len="ridge" type="text" inputmode="decimal" autocomplete="off"></label>
+        <label class="field"><span>Рёбра</span><input class="inp" id="len-hip" data-len="hip" type="text" inputmode="decimal" autocomplete="off"></label>
+        <label class="field"><span>Ендовы</span><input class="inp" id="len-valley" data-len="valley" type="text" inputmode="decimal" autocomplete="off"></label>
+        <label class="field"><span>Карниз</span><input class="inp" id="len-eaves" data-len="eaves" type="text" inputmode="decimal" autocomplete="off"></label>
+        <label class="field"><span>Фронтоны</span><input class="inp" id="len-gable" data-len="gable" type="text" inputmode="decimal" autocomplete="off"></label>
+        <label class="field"><span>Примыкания</span><input class="inp" id="len-abut" data-len="abut" type="text" inputmode="decimal" autocomplete="off"></label>
+      </div>
+      <p class="hint" id="lenHint"></p>
+    </div>
+
+    <div class="card">
+      <h2>Опции</h2>
+      <div class="tgl"><label for="f-insulOn">Утепление</label><span class="sw"><input type="checkbox" id="f-insulOn" data-f="insulOn"><i></i></span></div>
+      <div class="sub" id="insulBox"><label class="field"><span>Толщина утеплителя, мм</span><input class="inp" id="f-insulThick" data-f="insulThick" type="text" inputmode="decimal" autocomplete="off"></label></div>
+      <div class="tgl"><label for="f-drainOn">Водосток</label><span class="sw"><input type="checkbox" id="f-drainOn" data-f="drainOn"><i></i></span></div>
+      <div class="sub grid2" id="drainBox">
+        <label class="field"><span>Стояков, шт</span><input class="inp" id="f-drains" data-f="drains" type="text" inputmode="numeric" autocomplete="off"></label>
+        <label class="field"><span>Высота стояка, м</span><input class="inp" id="f-drainH" data-f="drainH" type="text" inputmode="decimal" autocomplete="off"></label>
+      </div>
+      <div class="tgl"><label for="f-soffitOn">Подшивка свесов софитом</label><span class="sw"><input type="checkbox" id="f-soffitOn" data-f="soffitOn"><i></i></span></div>
+      <div class="tgl"><label for="f-laborOn">Работы в смете<small>Монтаж по расценкам из вкладки «Цены»</small></label><span class="sw"><input type="checkbox" id="f-laborOn" data-f="laborOn"><i></i></span></div>
+      <div class="tgl"><label for="f-waste">Запас на покрытие, %<small>Подрезка, нахлёсты</small></label><input class="inp" id="f-waste" data-f="waste" type="text" inputmode="decimal" autocomplete="off" style="width:90px;text-align:right"></div>
+    </div>
+
+    <button type="button" class="btn ghost full danger" data-act="new">Новая смета</button>
+  </section>
+
+  <!-- ================= СМЕТА ================= -->
+  <section class="view v-quote" id="v-quote" hidden>
+    <div class="card" id="quote"></div>
+    <div class="card" data-noprint>
+      <h2>Добавить строку</h2>
+      <div class="extra-form">
+        <input class="inp name" id="x-name" type="text" placeholder="Название (работа или материал)" autocomplete="off">
+        <input class="inp" id="x-qty" type="text" inputmode="decimal" placeholder="Кол-во" autocomplete="off">
+        <input class="inp" id="x-unit" type="text" placeholder="Ед." autocomplete="off" value="шт">
+        <input class="inp" id="x-price" type="text" inputmode="decimal" placeholder="Цена, ₽" autocomplete="off">
+      </div>
+      <button type="button" class="btn full" data-act="extra-add" style="margin-top:8px">Добавить в смету</button>
+    </div>
+    <div class="stack" data-noprint>
+      <button type="button" class="btn primary full" data-act="save">Сохранить в архив</button>
+      <div class="row-btns" id="shareBtns">
+        <button type="button" class="btn dark" data-act="print" id="btnPrint">Печать / PDF</button>
+        <button type="button" class="btn dark" data-act="share" id="btnShare">Отправить</button>
+      </div>
+      <button type="button" class="btn full" data-act="copy">Скопировать текст сметы</button>
+      <textarea class="inp" id="copyBox" hidden readonly></textarea>
+    </div>
+  </section>
+
+  <!-- ================= ЦЕНЫ ================= -->
+  <section class="view v-prices" id="v-prices" hidden>
+    <div class="card">
+      <h2>Компания для бланка</h2>
+      <div class="stack">
+        <label class="field"><span>Название</span><input class="inp" id="c-name" data-c="name" type="text" autocomplete="off"></label>
+        <div class="grid2">
+          <label class="field"><span>Телефон</span><input class="inp" id="c-phone" data-c="phone" type="tel" autocomplete="off"></label>
+          <label class="field"><span>Город</span><input class="inp" id="c-city" data-c="city" type="text" autocomplete="off"></label>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <h2>Материалы и работы</h2>
+      <p class="note">Покрытие, доборные и водосток: цены из заказа <b>№303 от 13.05.2026</b> (Кровля и Фасад VEK, Аргун). <b>Лес и работы проверьте и поставьте свои.</b> Нажмите на название, чтобы изменить расход или удалить позицию.</p>
+      <div id="prices"></div>
+      <div class="row-btns" style="margin-top:12px">
+        <button type="button" class="btn" data-act="price-add">+ Позиция</button>
+        <button type="button" class="btn danger" data-act="cat-reset">Сбросить цены</button>
+      </div>
+    </div>
+    <div class="card">
+      <h2>Резервная копия</h2>
+      <p class="note">Цены и архив хранятся только в этом телефоне. Время от времени копируйте данные и отправляйте себе в WhatsApp или Telegram.</p>
+      <div class="row-btns" style="margin-top:10px">
+        <button type="button" class="btn" data-act="backup-copy">Скопировать данные</button>
+        <button type="button" class="btn" data-act="backup-show">Восстановить</button>
+      </div>
+      <div id="restoreBox" class="stack" hidden style="margin-top:10px">
+        <textarea class="inp" id="restoreText" placeholder="Вставьте сюда скопированные данные"></textarea>
+        <button type="button" class="btn primary" data-act="backup-restore">Восстановить из текста</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= АРХИВ ================= -->
+  <section class="view v-archive" id="v-archive" hidden>
+    <div class="arch" id="archive"></div>
+  </section>
+</main>
+
+<div class="totalbar" id="totalbar">
+  <div class="totalbar-in">
+    <div><small>Итого по смете</small><strong id="tb-total">0 ₽</strong></div>
+    <button type="button" class="btn primary small" data-act="tab" data-tab="quote">Смета →</button>
+  </div>
+</div>
+
+<nav class="tabs" aria-label="Разделы">
+  <div class="tabs-in" role="tablist">
+    <button type="button" class="tab" role="tab" data-act="tab" data-tab="object" aria-selected="true"><svg viewBox="0 0 24 24"><path d="M3 11 L12 4 L21 11"/><path d="M5 10 V20 H19 V10"/></svg>Объект</button>
+    <button type="button" class="tab" role="tab" data-act="tab" data-tab="quote" aria-selected="false"><svg viewBox="0 0 24 24"><path d="M6 3 H15 L19 7 V21 H6 Z"/><path d="M9 11 H16 M9 15 H16 M9 7 H12"/></svg>Смета</button>
+    <button type="button" class="tab" role="tab" data-act="tab" data-tab="prices" aria-selected="false"><svg viewBox="0 0 24 24"><path d="M4 5 H20 M4 12 H20 M4 19 H20"/><circle cx="9" cy="5" r="2"/><circle cx="15" cy="12" r="2"/><circle cx="8" cy="19" r="2"/></svg>Цены</button>
+    <button type="button" class="tab" role="tab" data-act="tab" data-tab="archive" aria-selected="false"><svg viewBox="0 0 24 24"><path d="M3 6 H21 V9 H3 Z"/><path d="M5 9 V20 H19 V9"/><path d="M10 13 H14"/></svg>Архив</button>
+  </div>
+</nav>
+
+<div class="toast" id="toast" role="status" hidden></div>
+
+<script>
+/* KROVLYA GROZNY 95 — смета кровли.
+ * Один скрипт без библиотек. Синтаксис ES2017 (работает на iOS 11+):
+ * без ?. и ??, без flex-gap в критичных местах.
+ */
+(function () {
+  'use strict';
+
+  var ARTIFACT = !!window.KRV_ARTIFACT;
+  var KEY = { cat: 'krv.catalog.v1', proj: 'krv.project.v1', arch: 'krv.archive.v1', seq: 'krv.seq.v1', co: 'krv.company.v1', tab: 'krv.tab.v1' };
+
+  /* ---------- хранилище (никогда не падает) ---------- */
+  function lsGet(k, d) { try { var v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } }
+  function lsSet(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); return true; } catch (e) { return false; } }
+
+  /* ---------- числа ---------- */
+  function num(v) {
+    if (typeof v === 'number') return isFinite(v) ? v : 0;
+    var s = String(v == null ? '' : v).replace(/\s/g, '').replace(',', '.');
+    var n = parseFloat(s);
+    return isFinite(n) ? n : 0;
+  }
+  function r2(n) { return Math.round(n * 100) / 100; }
+  function fmt(n, d) { return Number(n || 0).toLocaleString('ru-RU', { maximumFractionDigits: d == null ? 2 : d }); }
+  function rub(n) { return Math.round(n || 0).toLocaleString('ru-RU') + ' ₽'; }
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  function today() { var d = new Date(); return ('0' + d.getDate()).slice(-2) + '.' + ('0' + (d.getMonth() + 1)).slice(-2) + '.' + d.getFullYear(); }
+  function clone(o) { return JSON.parse(JSON.stringify(o)); }
+  function $(id) { return document.getElementById(id); }
+
+  /* ---------- справочники ---------- */
+  var BASES = [
+    ['area', 'Площадь скатов', 'м²'], ['ridgehip', 'Конёк + рёбра', 'м.п.'], ['ridge', 'Конёк', 'м.п.'],
+    ['hip', 'Рёбра', 'м.п.'], ['valley', 'Ендовы', 'м.п.'], ['hipvalley', 'Рёбра + ендовы', 'м.п.'],
+    ['eaves', 'Карниз', 'м.п.'], ['gable', 'Фронтоны', 'м.п.'], ['abut', 'Примыкания', 'м.п.'],
+    ['soffit', 'Подшивка свесов', 'м²'], ['insulvol', 'Объём утеплителя', 'м³'],
+    ['drains', 'Водосточные стояки', 'шт'], ['drainlen', 'Длина водосточных труб', 'м.п.'],
+    ['fixed', 'Фиксированное кол-во', '']
+  ];
+  var WHEN = [
+    ['all', 'Всегда'], ['sheet', 'Металлочерепица и профнастил'], ['metal', 'Только металлочерепица'],
+    ['prof', 'Только профнастил'], ['soft', 'Только гибкая черепица'], ['insul', 'Если утепление'],
+    ['drain', 'Если водосток'], ['soffit', 'Если подшивка свесов']
+  ];
+  var CATS = ['Стропильная система', 'Кровельное покрытие', 'Изоляция', 'Доборные элементы', 'Крепёж', 'Подшивка свесов', 'Водосток', 'Прочее', 'Работы'];
+  var ROOF = { gable: 'двускатная', hip: 'вальмовая', shed: 'односкатная', complex: 'сложная' };
+  var COVER = { metal: 'металлочерепица', prof: 'профнастил', soft: 'гибкая черепица' };
+
+  // [id, категория, название, ед., цена, база, расход на единицу базы, условие, округлять вверх, учитывать запас]
+  var DEFAULTS = [
+    ['raf', 0, 'Стропила, доска 50×200 (шаг 600)', 'м³', 20000, 'area', 0.0183, 'all', 0, 0],
+    ['hipraf', 0, 'Рёбра и ендовы, сдвоенная доска 50×200', 'м³', 20000, 'hipvalley', 0.022, 'all', 0, 0],
+    ['maur', 0, 'Мауэрлат, брус 150×150', 'м³', 20000, 'eaves', 0.0236, 'all', 0, 0],
+    ['lath', 0, 'Обрешётка, доска 25×100 (шаг 350)', 'м³', 20000, 'area', 0.0079, 'sheet', 0, 0],
+    ['counter', 0, 'Контробрешётка, брусок 50×50', 'м³', 20000, 'area', 0.0044, 'all', 0, 0],
+    ['osb', 0, 'ОСБ-3 9 мм, сплошной настил', 'м²', 380, 'area', 1.1, 'soft', 1, 0],
+    ['antisept', 0, 'Антисептик для древесины', 'л', 150, 'area', 0.35, 'all', 1, 0],
+    ['nails', 0, 'Гвозди строительные 100 мм', 'кг', 200, 'area', 0.05, 'all', 1, 0],
+
+    ['metal', 1, 'Металлочерепица Grand Line Credo 0,45', 'м²', 500, 'area', 1, 'metal', 0, 1],
+    ['prof', 1, 'Профнастил С-21 0,45', 'м²', 470, 'area', 1, 'prof', 0, 1],
+    ['soft', 1, 'Гибкая черепица', 'м²', 950, 'area', 1, 'soft', 0, 1],
+    ['underlay', 1, 'Подкладочный ковёр', 'м²', 250, 'area', 1.15, 'soft', 1, 0],
+    ['valleycarpet', 1, 'Ендовный ковёр', 'м.п.', 600, 'valley', 1.1, 'soft', 1, 0],
+    ['softridge', 1, 'Коньково-карнизная черепица', 'м.п.', 450, 'ridgehip', 1.05, 'soft', 1, 0],
+
+    ['membrane', 2, 'Гидроветрозащитная мембрана', 'м²', 60, 'area', 1.15, 'sheet', 1, 0],
+    ['wool', 2, 'Утеплитель, минвата', 'м³', 4500, 'insulvol', 1.05, 'insul', 0, 0],
+    ['vapor', 2, 'Пароизоляция', 'м²', 25, 'area', 1.15, 'insul', 1, 0],
+
+    ['ridgeel', 3, 'Конёк полукруглый 2 м', 'шт', 650, 'ridgehip', 0.527, 'sheet', 1, 0],
+    ['ridgecap', 3, 'Заглушка конька', 'шт', 350, 'fixed', 4, 'sheet', 1, 0],
+    ['valleytop', 3, 'Ендова верхняя 2 м', 'шт', 650, 'valley', 0.527, 'sheet', 1, 0],
+    ['valleybot', 3, 'Ендова нижняя 60×60, 2 м', 'шт', 1800, 'valley', 0.527, 'sheet', 1, 0],
+    ['eavesstrip', 3, 'Планка карнизная 2 м', 'шт', 850, 'eaves', 0.527, 'sheet', 1, 0],
+    ['windstrip', 3, 'Планка торцевая (ветровая) 2 м', 'шт', 850, 'gable', 0.527, 'sheet', 1, 0],
+    ['abutstrip', 3, 'Планка примыкания 2 м', 'шт', 850, 'abut', 0.527, 'sheet', 1, 0],
+    ['snow', 3, 'Снегозадержатель 2 м', 'шт', 650, 'eaves', 0.5, 'sheet', 1, 0],
+    ['sealant', 3, 'Силикон', 'шт', 650, 'fixed', 4, 'all', 1, 0],
+
+    ['screw29', 4, 'Саморез кровельный 4,8×29', 'шт', 3.9, 'area', 7.5, 'sheet', 1, 0],
+    ['screw70', 4, 'Саморез кровельный 4,8×70', 'шт', 7, 'ridgehip', 3, 'sheet', 1, 0],
+    ['softnails', 4, 'Гвозди кровельные ершёные', 'кг', 400, 'area', 0.06, 'soft', 1, 0],
+
+    ['soffitel', 5, 'Софит с рустом 0,45', 'м²', 850, 'soffit', 1.05, 'soffit', 0, 0],
+    ['soffitscrew', 5, 'Саморез П/Ш 25 мм', 'кг', 800, 'soffit', 0.09, 'soffit', 1, 0],
+
+    ['gutter', 6, 'Желоб 3 м', 'шт', 600, 'eaves', 0.345, 'drain', 1, 0],
+    ['gutterhold', 6, 'Держатель желоба', 'шт', 150, 'eaves', 1.7, 'drain', 1, 0],
+    ['gutterangle', 6, 'Угол желоба наружный', 'шт', 550, 'fixed', 4, 'drain', 1, 0],
+    ['guttercap', 6, 'Заглушка желоба', 'шт', 150, 'fixed', 2, 'drain', 1, 0],
+    ['funnel', 6, 'Воронка', 'шт', 150, 'drains', 1, 'drain', 1, 0],
+    ['pipe', 6, 'Труба водосточная 3 м', 'шт', 850, 'drainlen', 0.334, 'drain', 1, 0],
+    ['elbow', 6, 'Колено трубы', 'шт', 550, 'drains', 3, 'drain', 1, 0],
+    ['pipeclamp', 6, 'Кронштейн трубы', 'шт', 180, 'drainlen', 0.6, 'drain', 1, 0],
+
+    ['delivery', 7, 'Доставка', 'рейс', 3500, 'fixed', 1, 'all', 1, 0],
+
+    ['w-frame', 8, 'Монтаж стропильной системы', 'м²', 450, 'area', 1, 'all', 0, 0],
+    ['w-cover', 8, 'Монтаж покрытия и доборных', 'м²', 400, 'area', 1, 'all', 0, 0],
+    ['w-insul', 8, 'Утепление кровли', 'м²', 150, 'area', 1, 'insul', 0, 0],
+    ['w-soffit', 8, 'Подшивка свесов', 'м²', 500, 'soffit', 1, 'soffit', 0, 0],
+    ['w-drain', 8, 'Монтаж водостока', 'м.п.', 350, 'eaves', 1, 'drain', 0, 0]
+  ];
+  function defaultCatalog() {
+    return DEFAULTS.map(function (d) {
+      return { id: d[0], cat: CATS[d[1]], name: d[2], unit: d[3], price: d[4], base: d[5], rate: d[6], when: d[7], up: !!d[8], waste: !!d[9] };
+    });
+  }
+  function defaultCompany() { return { name: 'KROVLYA GROZNY 95', phone: '', city: 'Грозный' }; }
+
+  function nextNum() { return (lsGet(KEY.seq, 0) || 0) + 1; }
+  function newProject() {
+    return {
+      v: 1, savedId: null, num: nextNum(), date: today(),
+      client: '', phone: '', address: '',
+      roofType: 'hip', cover: 'metal', angle: '30', overhang: '0,5',
+      length: '12', width: '9', rects: [{ l: '12', w: '9' }, { l: '6', w: '5' }], perimeter: '',
+      manualLen: false, len: { ridge: '', hip: '', valley: '', eaves: '', gable: '', abut: '' },
+      insulOn: false, insulThick: '150', drainOn: true, drains: '4', drainH: '3,5',
+      soffitOn: true, laborOn: true, waste: '10', discount: '0',
+      qty: {}, off: {}, extras: []
+    };
+  }
+
+  /* ---------- состояние ---------- */
+  var catalog = lsGet(KEY.cat, null) || defaultCatalog();
+  var company = lsGet(KEY.co, null) || defaultCompany();
+  var P = lsGet(KEY.proj, null) || newProject();
+  var tab = lsGet(KEY.tab, 'object');
+  var openPriceId = null;
+
+  var saveTimer = null;
+  function saveDraft() { clearTimeout(saveTimer); saveTimer = setTimeout(function () { lsSet(KEY.proj, P); }, 250); }
+  var catTimer = null;
+  function saveCatalog() { clearTimeout(catTimer); catTimer = setTimeout(function () { lsSet(KEY.cat, catalog); }, 250); }
+
+  /* ---------- геометрия ---------- */
+  var LEN_KEYS = ['ridge', 'hip', 'valley', 'eaves', 'gable', 'abut'];
+
+  function geometry(p) {
+    var deg = Math.min(Math.max(num(p.angle), 0), 75);
+    var rad = deg * Math.PI / 180, cos = Math.cos(rad), tan = Math.tan(rad);
+    var o = Math.max(0, num(p.overhang));
+    var g = { deg: deg, ok: true, warn: '', A: 0, P: 0, plan: 0, area: 0, soffit: 0, rise: null, slope: null, auto: {} };
+    var l = num(p.length), w = num(p.width);
+
+    if (p.roofType === 'complex') {
+      var rs = p.rects || [];
+      rs.forEach(function (r) { g.A += num(r.l) * num(r.w); });
+      g.P = num(p.perimeter);
+      if (!g.P && rs.length === 1) g.P = 2 * (num(rs[0].l) + num(rs[0].w));
+      if (!g.P && g.A > 0) { g.warn = 'Укажите периметр стен, иначе свесы не учтены.'; }
+    } else {
+      g.A = l * w; g.P = 2 * (l + w);
+    }
+    if (g.A <= 0) { g.ok = false; g.warn = 'Введите размеры дома.'; return g; }
+    if (deg <= 0) { g.ok = false; g.warn = 'Введите уклон кровли в градусах.'; return g; }
+
+    // площадь прямоугольного многоугольника, расширенного на свес: A + o·P + 4o²
+    g.plan = g.A + o * g.P + 4 * o * o;
+    g.area = g.plan / cos;
+    g.soffit = g.plan - g.A;
+
+    var L = l + 2 * o, W = w + 2 * o, a = { ridge: 0, hip: 0, valley: 0, eaves: 0, gable: 0, abut: 0 };
+    if (p.roofType === 'gable') {
+      a.ridge = L; a.eaves = 2 * L; a.gable = 2 * W / cos;
+      g.rise = (W / 2) * tan; g.slope = (W / 2) / cos;
+    } else if (p.roofType === 'hip') {
+      if (W > L) { var t = L; L = W; W = t; }
+      var hw = W / 2; g.rise = hw * tan; g.slope = hw / cos;
+      a.ridge = L - W; a.hip = 4 * Math.sqrt(2 * hw * hw + g.rise * g.rise); a.eaves = 2 * (L + W);
+    } else if (p.roofType === 'shed') {
+      a.eaves = L; a.abut = L; a.gable = 2 * W / cos;
+      g.rise = W * tan; g.slope = W / cos;
+    } else {
+      a.eaves = g.P + 8 * o;
+    }
+    LEN_KEYS.forEach(function (k) { g.auto[k] = r2(a[k]); });
+    return g;
+  }
+
+  function lengths(p, g) {
+    var manual = p.manualLen || p.roofType === 'complex', out = {};
+    LEN_KEYS.forEach(function (k) {
+      if (manual) {
+        var v = p.len[k];
+        out[k] = (v === '' || v == null) && p.roofType === 'complex' && k === 'eaves' ? (g.auto.eaves || 0) : num(v);
+      } else out[k] = g.auto[k] || 0;
+    });
+    return out;
+  }
+
+  /* ---------- расчёт сметы ---------- */
+  function active(it, p) {
+    var c = p.cover, w = it.when, ok =
+      w === 'all' || w === c || (w === 'sheet' && (c === 'metal' || c === 'prof')) ||
+      (w === 'insul' && p.insulOn) || (w === 'drain' && p.drainOn) || (w === 'soffit' && p.soffitOn);
+    if (it.cat === 'Работы') ok = ok && p.laborOn;
+    return ok;
+  }
+
+  function compute(p) {
+    var g = geometry(p), Ln = lengths(p, g);
+    var nDrain = Math.max(0, Math.round(num(p.drains))), hDrain = Math.max(0, num(p.drainH));
+    var b = {
+      area: g.area, ridge: Ln.ridge, hip: Ln.hip, ridgehip: Ln.ridge + Ln.hip, valley: Ln.valley,
+      hipvalley: Ln.hip + Ln.valley, eaves: Ln.eaves, gable: Ln.gable, abut: Ln.abut,
+      soffit: p.soffitOn ? g.soffit : 0,
+      insulvol: p.insulOn ? g.area * num(p.insulThick) / 1000 : 0,
+      drains: p.drainOn ? nDrain : 0, drainlen: p.drainOn ? nDrain * hDrain : 0, fixed: 1
+    };
+    var waste = 1 + Math.max(0, num(p.waste)) / 100;
+    var groups = {}, order = [];
+    function push(cat, line) { if (!groups[cat]) { groups[cat] = []; order.push(cat); } groups[cat].push(line); }
+
+    if (g.ok) {
+      CATS.forEach(function (cat) {
+        catalog.forEach(function (it) {
+          if (it.cat !== cat || !active(it, p)) return;
+          var q = (b[it.base] || 0) * num(it.rate) * (it.waste ? waste : 1);
+          q = it.up ? Math.ceil(q - 1e-9) : r2(q);
+          var manual = Object.prototype.hasOwnProperty.call(p.qty, it.id);
+          if (q <= 0 && !manual) return;
+          var qq = manual ? num(p.qty[it.id]) : q;
+          push(cat, { id: it.id, name: it.name, unit: it.unit, price: num(it.price), qty: qq, calc: q, manual: manual, off: !!p.off[it.id] });
+        });
+      });
+      // позиции пользователя с категорией вне списка
+      catalog.forEach(function (it) {
+        if (CATS.indexOf(it.cat) >= 0 || !active(it, p)) return;
+        var q = (b[it.base] || 0) * num(it.rate);
+        q = it.up ? Math.ceil(q - 1e-9) : r2(q);
+        if (q > 0) push('Прочее', { id: it.id, name: it.name, unit: it.unit, price: num(it.price), qty: q, calc: q, manual: false, off: !!p.off[it.id] });
+      });
+    }
+    (p.extras || []).forEach(function (x) {
+      push('Дополнительно', { id: x.id, extra: true, name: x.name, unit: x.unit, price: num(x.price), qty: num(x.qty), calc: num(x.qty), manual: false, off: false });
+    });
+
+    var mat = 0, work = 0, extra = 0;
+    order.forEach(function (cat) {
+      groups[cat].forEach(function (ln) {
+        ln.sum = ln.off ? 0 : ln.qty * ln.price;
+        if (cat === 'Работы') work += ln.sum; else if (cat === 'Дополнительно') extra += ln.sum; else mat += ln.sum;
+      });
+    });
+    var sub = mat + work + extra, disc = Math.min(Math.max(num(p.discount), 0), 100);
+    var discSum = sub * disc / 100;
+    return { g: g, len: Ln, groups: groups, order: order, mat: mat, work: work, extra: extra, sub: sub, disc: disc, discSum: discSum, total: sub - discSum };
+  }
+
+  /* ---------- вкладка «Объект» ---------- */
+  function fillObject() {
+    ['client', 'phone', 'address', 'angle', 'overhang', 'length', 'width', 'perimeter', 'insulThick', 'drains', 'drainH', 'waste'].forEach(function (f) {
+      var el = $('f-' + f); if (el && document.activeElement !== el) el.value = P[f] == null ? '' : P[f];
+    });
+    ['manualLen', 'insulOn', 'drainOn', 'soffitOn', 'laborOn'].forEach(function (f) { var el = $('f-' + f); if (el) el.checked = !!P[f]; });
+    renderRects();
+  }
+
+  function renderRects() {
+    var html = '';
+    (P.rects || []).forEach(function (r, i) {
+      html += '<div class="rect"><div class="n">' + (i + 1) + '</div>' +
+        '<label class="field"><span>Длина, м</span><input class="inp" id="r-l-' + i + '" data-rect="' + i + '" data-k="l" type="text" inputmode="decimal" autocomplete="off" value="' + esc(r.l) + '"></label>' +
+        '<label class="field"><span>Ширина, м</span><input class="inp" id="r-w-' + i + '" data-rect="' + i + '" data-k="w" type="text" inputmode="decimal" autocomplete="off" value="' + esc(r.w) + '"></label>' +
+        '<button type="button" class="icon-btn" data-act="rect-del" data-i="' + i + '" aria-label="Удалить часть ' + (i + 1) + '">×</button></div>';
+    });
+    $('rects').innerHTML = html;
+  }
+
+  function updateObject() {
+    var R = compute(P), g = R.g, complex = P.roofType === 'complex';
+    Array.prototype.forEach.call(document.querySelectorAll('[data-act="seg"]'), function (b) {
+      b.setAttribute('aria-pressed', P[b.getAttribute('data-f')] === b.getAttribute('data-val') ? 'true' : 'false');
+    });
+    $('simpleDims').hidden = complex;
+    $('complexDims').hidden = !complex;
+    $('lblLength').textContent = P.roofType === 'gable' ? 'Длина вдоль конька, м' : 'Длина, м';
+    $('lblWidth').textContent = P.roofType === 'shed' ? 'Ширина (по скату), м' : 'Ширина, м';
+
+    $('g-area').textContent = g.ok ? fmt(g.area, 1) + ' м²' : '—';
+    $('g-plan').textContent = g.ok ? fmt(g.plan, 1) + ' м²' : '—';
+    $('g-rise').textContent = g.ok && g.rise != null ? fmt(g.rise, 2) + ' м' : '—';
+    $('g-slope').textContent = g.ok && g.slope != null ? fmt(g.slope, 2) + ' м' : '—';
+    $('g-soffit').textContent = g.ok ? fmt(g.soffit, 1) + ' м²' : '—';
+    $('g-warn').hidden = !g.warn; $('g-warn').textContent = g.warn;
+
+    var manual = P.manualLen || complex;
+    $('manualRow').hidden = complex;
+    LEN_KEYS.forEach(function (k) {
+      var el = $('len-' + k);
+      el.readOnly = !manual;
+      if (document.activeElement !== el) el.value = manual ? (P.len[k] == null ? '' : P.len[k]) : (g.ok ? fmt(g.auto[k], 2) : '');
+      if (manual && complex && k === 'eaves') el.placeholder = g.ok ? fmt(g.auto.eaves, 1) : '';
+      else el.placeholder = '0';
+    });
+    $('lenHint').textContent = complex
+      ? 'Сложная кровля: снимите длины с чертежа. Карниз без значения = периметр стен + 8 × свес.'
+      : (manual ? 'Значения заданы вручную.' : 'Посчитано по размерам с учётом свеса. Включите «вручную», чтобы поправить.');
+
+    $('insulBox').hidden = !P.insulOn;
+    $('drainBox').hidden = !P.drainOn;
+    $('tb-total').textContent = rub(R.total);
+    $('bandNum').innerHTML = 'Смета № ' + esc(P.num) + '<br>' + esc(P.date);
+    return R;
+  }
+
+  /* ---------- вкладка «Смета» ---------- */
+  function lineRow(ln) {
+    var qcell;
+    if (ln.extra) {
+      qcell = '<span>' + fmt(ln.qty, 2) + '</span><span class="u">' + esc(ln.unit) + '</span>';
+    } else {
+      qcell = '<input class="qinp' + (ln.manual ? ' changed' : '') + '" id="q-' + esc(ln.id) + '" data-q="' + esc(ln.id) + '" type="text" inputmode="decimal" autocomplete="off" value="' + esc(String(ln.qty).replace('.', ',')) + '" aria-label="Количество: ' + esc(ln.name) + '">' +
+        '<span class="pv">' + fmt(ln.qty, 2) + '</span><span class="u">' + esc(ln.unit) + '</span>';
+    }
+    var x = ln.extra
+      ? '<button type="button" class="x-btn" data-act="extra-del" data-id="' + esc(ln.id) + '" aria-label="Удалить строку">×</button>'
+      : '<button type="button" class="x-btn" data-act="line-toggle" data-id="' + esc(ln.id) + '" aria-label="' + (ln.off ? 'Вернуть строку' : 'Убрать строку') + '">' + (ln.off ? '↺' : '×') + '</button>';
+    return '<tr class="' + (ln.off ? 'off' : '') + '"><td>' + esc(ln.name) + '<span class="price">' + fmt(ln.price, 2) + ' ₽ / ' + esc(ln.unit) + '</span></td>' +
+      '<td class="c-q">' + qcell + '</td><td class="c-s" id="s-' + esc(ln.id) + '">' + rub(ln.sum) + '</td><td class="c-x">' + x + '</td></tr>';
+  }
+
+  function renderQuote() {
+    var R = compute(P), g = R.g;
+    var head = '<div class="doc-head">' +
+      '<div class="print-only" style="font-weight:700">' + esc(company.name) + (company.phone ? ' · ' + esc(company.phone) : '') + (company.city ? ' · ' + esc(company.city) : '') + '</div>' +
+      '<h1>Смета № ' + esc(P.num) + ' от ' + esc(P.date) + '</h1>' +
+      '<div class="doc-meta">' + (P.client ? 'Заказчик: ' + esc(P.client) + (P.phone ? ', ' + esc(P.phone) : '') + '<br>' : '') +
+      (P.address ? 'Адрес: ' + esc(P.address) + '<br>' : '') +
+      'Кровля ' + ROOF[P.roofType] + ', ' + COVER[P.cover] + ', уклон ' + fmt(g.deg, 1) + '°' +
+      (g.ok ? ', площадь скатов ' + fmt(g.area, 1) + ' м²' : '') + '</div></div>';
+
+    if (!g.ok) {
+      $('quote').innerHTML = head + '<div class="empty"><strong>Нет данных для расчёта</strong>' + esc(g.warn) + ' Откройте вкладку «Объект».</div>';
+      return R;
+    }
+    var rows = '';
+    R.order.forEach(function (cat) {
+      rows += '<tr class="grp"><td colspan="4">' + esc(cat) + '</td></tr>';
+      R.groups[cat].forEach(function (ln) { rows += lineRow(ln); });
+    });
+    var sums =
+      '<div class="sum-row"><span>Материалы</span><span id="t-mat">' + rub(R.mat) + '</span></div>' +
+      (R.work ? '<div class="sum-row"><span>Работы</span><span id="t-work">' + rub(R.work) + '</span></div>' : '') +
+      (R.extra ? '<div class="sum-row"><span>Дополнительно</span><span id="t-extra">' + rub(R.extra) + '</span></div>' : '') +
+      '<div class="sum-row" data-noprint><label for="f-discount">Скидка, %</label><input class="qinp" id="f-discount" data-f="discount" type="text" inputmode="decimal" autocomplete="off" value="' + esc(P.discount) + '" style="width:70px;min-height:36px;text-align:right;border:1px solid var(--line);border-radius:8px;background:var(--surface-2);padding:4px 6px"></div>' +
+      '<div class="sum-row" id="row-disc"' + (R.disc ? '' : ' hidden') + '><span>Скидка <span id="t-discp">' + fmt(R.disc, 1) + '</span>%</span><span id="t-disc">−' + rub(R.discSum) + '</span></div>' +
+      '<div class="sum-row grand"><span>ИТОГО</span><strong id="t-total">' + rub(R.total) + '</strong></div>' +
+      '<p class="hint" data-noprint>Количество можно исправить прямо в таблице. Жёлтая рамка = изменено вручную; очистите поле, чтобы вернуть расчёт.</p>' +
+      '<div class="sign" hidden><div>Исполнитель</div><div>Заказчик</div></div>';
+
+    $('quote').innerHTML = head + '<div style="overflow-x:auto;margin-top:10px"><table class="lines"><thead><tr><th>Наименование</th><th class="c-q">Кол-во</th><th class="c-s">Сумма</th><th class="c-x"></th></tr></thead><tbody>' + rows + '</tbody></table></div><div style="margin-top:12px">' + sums + '</div>';
+    return R;
+  }
+
+  function refreshQuoteNumbers() {
+    var R = compute(P);
+    R.order.forEach(function (cat) { R.groups[cat].forEach(function (ln) { var el = $('s-' + ln.id); if (el) el.textContent = rub(ln.sum); }); });
+    if ($('t-mat')) $('t-mat').textContent = rub(R.mat);
+    if ($('t-work')) $('t-work').textContent = rub(R.work);
+    if ($('t-extra')) $('t-extra').textContent = rub(R.extra);
+    if ($('row-disc')) { $('row-disc').hidden = !R.disc; $('t-discp').textContent = fmt(R.disc, 1); $('t-disc').textContent = '−' + rub(R.discSum); }
+    if ($('t-total')) $('t-total').textContent = rub(R.total);
+    $('tb-total').textContent = rub(R.total);
+  }
+
+  function quoteText() {
+    var R = compute(P), g = R.g, t = [];
+    t.push(company.name + (company.phone ? ', ' + company.phone : ''));
+    t.push('Смета № ' + P.num + ' от ' + P.date);
+    if (P.client) t.push('Заказчик: ' + P.client + (P.phone ? ', ' + P.phone : ''));
+    if (P.address) t.push('Адрес: ' + P.address);
+    t.push('Кровля ' + ROOF[P.roofType] + ', ' + COVER[P.cover] + ', уклон ' + fmt(g.deg, 1) + '°, площадь скатов ' + fmt(g.area, 1) + ' м²');
+    R.order.forEach(function (cat) {
+      t.push(''); t.push(cat.toUpperCase());
+      R.groups[cat].forEach(function (ln) { if (!ln.off) t.push('• ' + ln.name + ': ' + fmt(ln.qty, 2) + ' ' + ln.unit + ' × ' + fmt(ln.price, 2) + ' = ' + rub(ln.sum)); });
+    });
+    t.push('');
+    t.push('Материалы: ' + rub(R.mat));
+    if (R.work) t.push('Работы: ' + rub(R.work));
+    if (R.extra) t.push('Дополнительно: ' + rub(R.extra));
+    if (R.disc) t.push('Скидка ' + fmt(R.disc, 1) + '%: −' + rub(R.discSum));
+    t.push('ИТОГО: ' + rub(R.total));
+    return t.join('\n');
+  }
+
+  /* ---------- вкладка «Цены» ---------- */
+  function opts(list, val) {
+    return list.map(function (o) { return '<option value="' + esc(o[0]) + '"' + (o[0] === val ? ' selected' : '') + '>' + esc(o[1]) + (o[2] ? ', ' + esc(o[2]) : '') + '</option>'; }).join('');
+  }
+  function baseLabel(b) { for (var i = 0; i < BASES.length; i++) if (BASES[i][0] === b) return BASES[i][1] + (BASES[i][2] ? ' (' + BASES[i][2] + ')' : ''); return b; }
+
+  function renderPrices() {
+    var html = '', cats = CATS.slice();
+    catalog.forEach(function (it) { if (cats.indexOf(it.cat) < 0) cats.push(it.cat); });
+    cats.forEach(function (cat) {
+      var items = catalog.filter(function (it) { return it.cat === cat; });
+      if (!items.length) return;
+      html += '<div class="cat-title">' + esc(cat) + '</div>';
+      items.forEach(function (it) {
+        var id = esc(it.id), open = openPriceId === it.id;
+        html += '<div class="pitem"><button type="button" class="nm" data-act="price-edit" data-id="' + id + '" aria-expanded="' + open + '">' + esc(it.name) +
+          '<small>' + (it.base === 'fixed' ? fmt(it.rate, 3) + ' ' + esc(it.unit) + ' на смету' : fmt(it.rate, 4) + ' ' + esc(it.unit) + ' × ' + esc(baseLabel(it.base))) + '</small></button>' +
+          '<div class="pr"><input class="inp" id="p-' + id + '" data-p="' + id + '" data-k="price" type="text" inputmode="decimal" autocomplete="off" value="' + esc(String(it.price).replace('.', ',')) + '" aria-label="Цена: ' + esc(it.name) + '"><em>₽</em></div>';
+        if (open) {
+          html += '<div class="pedit">' +
+            '<label class="field"><span>Название</span><input class="inp" id="pe-name" data-p="' + id + '" data-k="name" type="text" autocomplete="off" value="' + esc(it.name) + '"></label>' +
+            '<div class="grid2"><label class="field"><span>Единица</span><input class="inp" id="pe-unit" data-p="' + id + '" data-k="unit" type="text" autocomplete="off" value="' + esc(it.unit) + '"></label>' +
+            '<label class="field"><span>Расход на 1 ед. базы</span><input class="inp" id="pe-rate" data-p="' + id + '" data-k="rate" type="text" inputmode="decimal" autocomplete="off" value="' + esc(String(it.rate).replace('.', ',')) + '"></label></div>' +
+            '<label class="field"><span>Считать от</span><select class="inp" id="pe-base" data-p="' + id + '" data-k="base">' + opts(BASES, it.base) + '</select></label>' +
+            '<label class="field"><span>Когда включать</span><select class="inp" id="pe-when" data-p="' + id + '" data-k="when">' + opts(WHEN, it.when) + '</select></label>' +
+            '<label class="field"><span>Раздел</span><select class="inp" id="pe-cat" data-p="' + id + '" data-k="cat">' + opts(CATS.map(function (c) { return [c, c]; }), it.cat) + '</select></label>' +
+            '<label class="chk"><input type="checkbox" id="pe-up" data-p="' + id + '" data-k="up"' + (it.up ? ' checked' : '') + '>Округлять до целого вверх</label>' +
+            '<label class="chk"><input type="checkbox" id="pe-waste" data-p="' + id + '" data-k="waste"' + (it.waste ? ' checked' : '') + '>Добавлять запас на покрытие</label>' +
+            '<button type="button" class="btn small danger" data-act="price-del" data-id="' + id + '">Удалить позицию</button></div>';
+        }
+        html += '</div>';
+      });
+    });
+    $('prices').innerHTML = html;
+    $('c-name').value = company.name; $('c-phone').value = company.phone; $('c-city').value = company.city;
+  }
+
+  /* ---------- вкладка «Архив» ---------- */
+  function renderArchive() {
+    var list = lsGet(KEY.arch, []) || [];
+    if (!list.length) {
+      $('archive').innerHTML = '<div class="card empty"><strong>Архив пуст</strong>Сохранённые сметы появятся здесь. Кнопка «Сохранить в архив» — во вкладке «Смета».</div>';
+      return;
+    }
+    var html = '';
+    list.slice().reverse().forEach(function (a) {
+      html += '<div class="aitem"><div class="top"><strong>№ ' + esc(a.p.num) + (a.p.client ? ' · ' + esc(a.p.client) : '') + '</strong><span>' + rub(a.total) + '</span></div>' +
+        '<div class="meta">' + esc(a.p.date) + ' · ' + ROOF[a.p.roofType] + ', ' + COVER[a.p.cover] + ' · ' + fmt(a.area, 1) + ' м²' + (a.p.address ? '<br>' + esc(a.p.address) : '') + '</div>' +
+        '<div class="row-btns c3"><button type="button" class="btn small" data-act="arch-open" data-id="' + esc(a.id) + '">Открыть</button>' +
+        '<button type="button" class="btn small" data-act="arch-dup" data-id="' + esc(a.id) + '">Копия</button>' +
+        '<button type="button" class="btn small danger" data-act="arch-del" data-id="' + esc(a.id) + '">Удалить</button></div></div>';
+    });
+    $('archive').innerHTML = html;
+  }
+
+  /* ---------- общие ---------- */
+  var toastTimer = null;
+  function toast(msg) { var t = $('toast'); t.textContent = msg; t.hidden = false; clearTimeout(toastTimer); toastTimer = setTimeout(function () { t.hidden = true; }, 2200); }
+
+  // двойное нажатие вместо confirm(): первое нажатие «взводит» кнопку
+  function armed(btn, label) {
+    if (btn.getAttribute('data-armed')) return true;
+    var old = btn.textContent; btn.setAttribute('data-armed', '1'); btn.textContent = label; btn.classList.add('armed');
+    setTimeout(function () { btn.removeAttribute('data-armed'); btn.textContent = old; btn.classList.remove('armed'); }, 3000);
+    return false;
+  }
+
+  function showTab(name) {
+    tab = name; lsSet(KEY.tab, name);
+    ['object', 'quote', 'prices', 'archive'].forEach(function (t) { $('v-' + t).hidden = t !== name; });
+    Array.prototype.forEach.call(document.querySelectorAll('.tab'), function (b) { b.setAttribute('aria-selected', b.getAttribute('data-tab') === name ? 'true' : 'false'); });
+    $('totalbar').hidden = name !== 'object';
+    if (name === 'object') { fillObject(); updateObject(); }
+    if (name === 'quote') renderQuote();
+    if (name === 'prices') renderPrices();
+    if (name === 'archive') renderArchive();
+    window.scrollTo(0, 0);
+  }
+
+  function copyText(text, okMsg) {
+    function fallback() {
+      var box = $('copyBox'); box.hidden = false; box.value = text; box.focus(); box.select();
+      try { if (document.execCommand('copy')) { toast(okMsg); return; } } catch (e) { }
+      toast('Выделите текст и скопируйте вручную');
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function () { toast(okMsg); }, fallback);
+    } else fallback();
+  }
+
+  function saveToArchive() {
+    var R = compute(P);
+    if (!R.g.ok) { toast('Сначала заполните размеры'); return; }
+    var list = lsGet(KEY.arch, []) || [];
+    if (!P.savedId) P.savedId = 'a' + Date.now();
+    var entry = { id: P.savedId, p: clone(P), total: R.total, area: R.g.area, at: Date.now() };
+    var idx = -1;
+    list.forEach(function (a, i) { if (a.id === P.savedId) idx = i; });
+    if (idx >= 0) list[idx] = entry; else list.push(entry);
+    lsSet(KEY.arch, list);
+    lsSet(KEY.seq, Math.max(lsGet(KEY.seq, 0) || 0, num(P.num)));
+    lsSet(KEY.proj, P);
+    toast(idx >= 0 ? 'Смета № ' + P.num + ' обновлена' : 'Смета № ' + P.num + ' сохранена');
+  }
+
+  /* ---------- обработчики (делегирование на document) ---------- */
+  function onClick(e) {
+    var btn = e.target.closest ? e.target.closest('[data-act]') : null;
+    if (!btn) return;
+    var act = btn.getAttribute('data-act'), id = btn.getAttribute('data-id');
+
+    if (act === 'tab') { showTab(btn.getAttribute('data-tab')); return; }
+    if (act === 'seg') {
+      var f = btn.getAttribute('data-f'), val = btn.getAttribute('data-val');
+      if (f === 'roofType' && val === 'complex' && P.roofType !== 'complex') {
+        // переносим размеры в первую часть сложного плана
+        if (!P.rects || !P.rects.length) P.rects = [{ l: P.length, w: P.width }];
+        var g0 = geometry(P);
+        LEN_KEYS.forEach(function (k) { if (P.len[k] === '' && g0.ok) P.len[k] = String(g0.auto[k]).replace('.', ','); });
+      }
+      P[f] = val; saveDraft(); fillObject(); updateObject(); return;
+    }
+    if (act === 'rect-add') { P.rects.push({ l: '', w: '' }); renderRects(); saveDraft(); var n = P.rects.length - 1; if ($('r-l-' + n)) $('r-l-' + n).focus(); return; }
+    if (act === 'rect-del') { P.rects.splice(num(btn.getAttribute('data-i')), 1); renderRects(); updateObject(); saveDraft(); return; }
+    if (act === 'new') {
+      if (!P.savedId && !armed(btn, 'Текущая не сохранена. Нажмите ещё раз')) return;
+      P = newProject(); lsSet(KEY.proj, P); fillObject(); updateObject(); toast('Новая смета № ' + P.num); return;
+    }
+    if (act === 'line-toggle') { if (P.off[id]) delete P.off[id]; else P.off[id] = true; saveDraft(); renderQuote(); return; }
+    if (act === 'extra-add') {
+      var name = $('x-name').value.trim(), q = num($('x-qty').value), pr = num($('x-price').value);
+      if (!name) { toast('Укажите название строки'); $('x-name').focus(); return; }
+      P.extras.push({ id: 'x' + Date.now(), name: name, unit: $('x-unit').value.trim() || 'шт', qty: q || 1, price: pr });
+      $('x-name').value = ''; $('x-qty').value = ''; $('x-price').value = '';
+      saveDraft(); renderQuote(); toast('Строка добавлена'); return;
+    }
+    if (act === 'extra-del') { P.extras = P.extras.filter(function (x) { return x.id !== id; }); saveDraft(); renderQuote(); return; }
+    if (act === 'save') { saveToArchive(); return; }
+    if (act === 'print') { try { window.print(); } catch (err) { toast('Печать недоступна, откройте в Safari'); } return; }
+    if (act === 'share') {
+      var text = quoteText();
+      if (navigator.share) { navigator.share({ title: 'Смета № ' + P.num, text: text }).catch(function () { }); }
+      else copyText(text, 'Текст сметы скопирован');
+      return;
+    }
+    if (act === 'copy') { copyText(quoteText(), 'Текст сметы скопирован'); return; }
+
+    if (act === 'price-edit') { openPriceId = openPriceId === id ? null : id; renderPrices(); return; }
+    if (act === 'price-add') {
+      var it = { id: 'u' + Date.now(), cat: 'Прочее', name: 'Новая позиция', unit: 'шт', price: 0, base: 'fixed', rate: 1, when: 'all', up: true, waste: false };
+      catalog.push(it); openPriceId = it.id; lsSet(KEY.cat, catalog); renderPrices();
+      if ($('pe-name')) { $('pe-name').focus(); $('pe-name').select(); }
+      return;
+    }
+    if (act === 'price-del') {
+      if (!armed(btn, 'Точно удалить?')) return;
+      catalog = catalog.filter(function (x) { return x.id !== id; }); openPriceId = null; lsSet(KEY.cat, catalog); renderPrices(); toast('Позиция удалена'); return;
+    }
+    if (act === 'cat-reset') {
+      if (!armed(btn, 'Вернуть стандартные?')) return;
+      catalog = defaultCatalog(); openPriceId = null; lsSet(KEY.cat, catalog); renderPrices(); toast('Стандартные цены восстановлены'); return;
+    }
+    if (act === 'backup-copy') {
+      copyText(JSON.stringify({ app: 'krovlya95', v: 1, catalog: catalog, company: company, archive: lsGet(KEY.arch, []) }), 'Данные скопированы. Сохраните их в чате.');
+      return;
+    }
+    if (act === 'backup-show') { $('restoreBox').hidden = !$('restoreBox').hidden; return; }
+    if (act === 'backup-restore') {
+      try {
+        var d = JSON.parse($('restoreText').value);
+        if (!d || d.app !== 'krovlya95' || !d.catalog) throw new Error('bad');
+        catalog = d.catalog; lsSet(KEY.cat, catalog);
+        if (d.company) { company = d.company; lsSet(KEY.co, company); }
+        if (d.archive) lsSet(KEY.arch, d.archive);
+        $('restoreText').value = ''; $('restoreBox').hidden = true; renderPrices(); toast('Данные восстановлены');
+      } catch (err) { toast('Не получилось: вставьте текст целиком'); }
+      return;
+    }
+    if (act === 'arch-open' || act === 'arch-dup') {
+      var list = lsGet(KEY.arch, []) || [], found = null;
+      list.forEach(function (a) { if (a.id === id) found = a; });
+      if (!found) return;
+      P = clone(found.p);
+      if (act === 'arch-dup') { P.savedId = null; P.num = nextNum(); P.date = today(); toast('Копия: смета № ' + P.num); }
+      else toast('Открыта смета № ' + P.num);
+      lsSet(KEY.proj, P); showTab('object'); return;
+    }
+    if (act === 'arch-del') {
+      if (!armed(btn, 'Точно?')) return;
+      lsSet(KEY.arch, (lsGet(KEY.arch, []) || []).filter(function (a) { return a.id !== id; }));
+      if (P.savedId === id) { P.savedId = null; saveDraft(); }
+      renderArchive(); toast('Удалено'); return;
+    }
+  }
+
+  function onInput(e) {
+    var el = e.target, f = el.getAttribute('data-f');
+    if (f) {
+      P[f] = el.type === 'checkbox' ? el.checked : el.value;
+      if (f === 'manualLen' && el.checked) {
+        var g = geometry(P);
+        LEN_KEYS.forEach(function (k) { P.len[k] = g.ok ? String(g.auto[k]).replace('.', ',') : ''; });
+      }
+      saveDraft();
+      if (f === 'discount') refreshQuoteNumbers(); else updateObject();
+      return;
+    }
+    var lk = el.getAttribute('data-len');
+    if (lk) { P.len[lk] = el.value; saveDraft(); updateObject(); return; }
+    var ri = el.getAttribute('data-rect');
+    if (ri != null) { P.rects[num(ri)][el.getAttribute('data-k')] = el.value; saveDraft(); updateObject(); return; }
+    var q = el.getAttribute('data-q');
+    if (q) {
+      if (el.value.trim() === '') delete P.qty[q]; else P.qty[q] = el.value;
+      el.classList.toggle('changed', el.value.trim() !== '');
+      saveDraft(); refreshQuoteNumbers(); return;
+    }
+    var pid = el.getAttribute('data-p');
+    if (pid) {
+      var k = el.getAttribute('data-k'), it = null;
+      catalog.forEach(function (x) { if (x.id === pid) it = x; });
+      if (!it) return;
+      if (k === 'up' || k === 'waste') it[k] = el.checked;
+      else if (k === 'price' || k === 'rate') it[k] = num(el.value);
+      else it[k] = el.value;
+      saveCatalog();
+      if (e.type === 'change' && (k === 'base' || k === 'when' || k === 'cat' || k === 'rate' || k === 'unit' || k === 'up' || k === 'waste')) renderPrices();
+      return;
+    }
+    var c = el.getAttribute('data-c');
+    if (c) { company[c] = el.value; lsSet(KEY.co, company); }
+  }
+
+  function onBlur(e) {
+    // при выходе из поля количества перерисовываем, чтобы показать расчётное значение
+    var el = e.target, q = el.getAttribute && el.getAttribute('data-q');
+    if (q && el.value.trim() === '' && !Object.prototype.hasOwnProperty.call(P.qty, q)) renderQuote();
+  }
+
+  /* ---------- запуск ---------- */
+  function init() {
+    if (ARTIFACT) { $('shareBtns').hidden = true; }
+    else if (!navigator.share) { $('btnShare').hidden = true; $('shareBtns').style.gridTemplateColumns = '1fr'; }
+    document.addEventListener('click', onClick);
+    document.addEventListener('input', onInput);
+    document.addEventListener('change', onInput);
+    document.addEventListener('focusout', onBlur);
+    showTab(['object', 'quote', 'prices', 'archive'].indexOf(tab) >= 0 ? tab : 'object');
+
+    if (!ARTIFACT && 'serviceWorker' in navigator && location.protocol !== 'file:') {
+      navigator.serviceWorker.register('./sw.js').catch(function () { });
+    }
+  }
+
+  // для тестов
+  window.KRV = { geometry: geometry, compute: compute, state: function () { return P; } };
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
+})();
+
+</script>
+</body>
+</html>
