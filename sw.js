@@ -1,5 +1,5 @@
 /* Service worker: приложение работает без интернета после первого открытия. */
-var CACHE = 'krovlya95-b374c9c7';
+var CACHE = 'krovlya95-a2a43e20';
 var FONT_CACHE = 'krovlya95-fonts';
 var ASSETS = ['./', './index.html', './manifest.webmanifest', './icons/icon-180.png', './icons/icon-192.png', './icons/icon-512.png'];
 

@@ -31,6 +31,11 @@
   --accent-ink: #7a5800;
   --danger: #b8322a;
   --ok: #2a7a4c;
+  --ground: #d5dbd4;
+  --l-ridge: #c62f26;
+  --l-valley: #1f8a4a;
+  --l-raf: #2a5cc7;
+  --l-wall: #23292d;
   --display: "Unbounded", "Arial Black", -apple-system, system-ui, sans-serif;
   --body: "Onest", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --r: 12px;
@@ -40,14 +45,14 @@
     --bg: #141719; --surface: #1e2225; --surface-2: #272c30; --line: #343b40;
     --fg: #eceeed; --muted: #9aa3a8; --band: #0d0f10; --band-fg: #eceeed;
     --accent: #f5c02a; --on-accent: #16191b; --accent-ink: #f5c02a;
-    --danger: #ff7166; --ok: #5ccb8d; color-scheme: dark;
+    --danger: #ff7166; --ok: #5ccb8d; --ground: #2b3135; --l-ridge: #ff6b5e; --l-valley: #4fd38a; --l-raf: #78a6ff; --l-wall: #e4e8e6; color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
   --bg: #141719; --surface: #1e2225; --surface-2: #272c30; --line: #343b40;
   --fg: #eceeed; --muted: #9aa3a8; --band: #0d0f10; --band-fg: #eceeed;
   --accent: #f5c02a; --on-accent: #16191b; --accent-ink: #f5c02a;
-  --danger: #ff7166; --ok: #5ccb8d; color-scheme: dark;
+  --danger: #ff7166; --ok: #5ccb8d; --ground: #2b3135; --l-ridge: #ff6b5e; --l-valley: #4fd38a; --l-raf: #78a6ff; --l-wall: #e4e8e6; color-scheme: dark;
 }
 
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -119,6 +124,7 @@ textarea.inp { min-height: 90px; font-size: 13px; font-family: ui-monospace, Men
 .seg { display: grid; grid-gap: 6px; }
 .seg.c4 { grid-template-columns: 1fr 1fr; }
 .seg.c3 { grid-template-columns: 1fr 1fr 1fr; }
+.seg.c2 { grid-template-columns: 1fr 1fr; }
 .seg button {
   min-height: 48px; padding: 8px 6px; border-radius: 10px;
   border: 1px solid var(--line); background: var(--surface-2);
@@ -168,6 +174,63 @@ textarea.inp { min-height: 90px; font-size: 13px; font-family: ui-monospace, Men
 .kv.big strong { font-family: var(--display); font-size: 30px; font-weight: 600; letter-spacing: -0.01em; }
 .hint { font-size: 13px; color: var(--muted); margin: 10px 0 0; }
 .warn { font-size: 14px; color: var(--danger); margin: 8px 0 0; font-weight: 600; }
+
+/* 3D-схема */
+.r3d { position: relative; background: var(--surface-2); border-radius: 10px; margin-bottom: 14px; overflow: hidden; }
+.r3d svg { display: block; width: 100%; height: auto; max-height: 300px; }
+.r3d .r3d-bar { display: flex; justify-content: space-between; align-items: center; padding: 8px 8px 0 10px; }
+.r3d .r3d-tag { flex: 1; min-width: 0; font-size: 13px; font-weight: 600; color: var(--muted); margin-right: 8px; }
+.r3d .r3d-tag i { display: inline-block; width: 11px; height: 11px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
+.r3d .rot { flex: none; white-space: nowrap; min-height: 36px; padding: 4px 10px; font-size: 13px; border-radius: 8px; border: 1px solid var(--line); background: var(--surface); font-weight: 600; }
+.r3d .r3d-note { font-size: 12px; color: var(--muted); padding: 0 10px 8px; margin: 0; }
+.r3d-empty { padding: 40px 16px; text-align: center; color: var(--muted); font-size: 14px; }
+.r3d-q { margin: 12px 0 4px; }
+.r3d-q .r3d-bar { display: none; }
+
+/* контур по точкам */
+.presets { display: flex; flex-wrap: wrap; align-items: center; }
+.presets > span { font-size: 13px; color: var(--muted); margin-right: 8px; }
+.presets .btn { min-width: 48px; margin: 0 6px 0 0; font-size: 16px; }
+.walls { display: grid; grid-gap: 8px; }
+.wrow { display: grid; grid-template-columns: 46px auto 1fr 44px; grid-gap: 6px; align-items: center; }
+.wl { font-weight: 700; font-size: 14px; color: var(--muted); white-space: nowrap; }
+.dirs { display: grid; grid-template-columns: repeat(4, 34px); grid-gap: 3px; }
+.dirs button { height: 42px; border-radius: 8px; border: 1px solid var(--line); background: var(--surface); font-size: 18px; line-height: 1; padding: 0; color: var(--muted); }
+.dirs button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--on-accent); font-weight: 700; }
+.wrow .inp { min-height: 42px; padding: 8px 10px; }
+.wstat { margin: 0; font-size: 14px; font-weight: 600; }
+.wstat.ok { color: var(--ok); }
+.wstat.bad { color: var(--danger); }
+@media (max-width: 360px) { .dirs { grid-template-columns: repeat(4, 30px); } .wrow { grid-template-columns: 40px auto 1fr 40px; } }
+
+/* уклон у стены */
+.wsl { display: grid; grid-template-columns: 1fr 96px; grid-gap: 8px; align-items: center; margin: -2px 0 4px 52px; font-size: 13px; color: var(--muted); }
+.wsl .inp { min-height: 38px; padding: 6px 10px; font-size: 16px; }
+
+/* ручные правки */
+.ovlist { display: grid; grid-gap: 6px; }
+.ovrow { display: grid; grid-template-columns: 22px 1fr auto 104px; grid-gap: 8px; align-items: center; font-size: 14px; }
+.ovrow .calc { color: var(--muted); font-size: 13px; white-space: nowrap; }
+.ovrow .inp { min-height: 38px; padding: 6px 10px; text-align: right; font-size: 16px; }
+.ovrow .inp.changed { border-color: var(--accent); background: var(--surface); }
+.ovrow.flash .inp { outline: 3px solid var(--accent); }
+.plan2d text[data-act] { cursor: pointer; }
+
+/* план кровли */
+.plan2d { background: var(--surface-2); border-radius: 10px; overflow: hidden; }
+.plan2d svg { display: block; width: 100%; height: auto; max-height: 560px; }
+.legend { display: flex; flex-wrap: wrap; margin: 10px 0 4px; font-size: 13px; color: var(--muted); }
+.legend span { margin: 0 14px 6px 0; white-space: nowrap; }
+.lg { display: inline-block; width: 18px; height: 0; border-top: 3px solid; vertical-align: middle; margin-right: 6px; }
+.lg-ridge { border-color: var(--l-ridge); }
+.lg-hip { border-color: var(--l-ridge); border-top-width: 2px; }
+.lg-valley { border-color: var(--l-valley); }
+.lg-raf { border-color: var(--l-raf); border-top-width: 2px; }
+.lg-eave { border-color: var(--muted); border-top-style: dashed; border-top-width: 2px; }
+.pl-sum { display: grid; grid-template-columns: 1fr auto; grid-gap: 4px 12px; font-size: 14px; margin-top: 6px; }
+.pl-sum .v { text-align: right; font-weight: 600; white-space: nowrap; }
+.pl-sum .s { grid-column: 1 / -1; color: var(--muted); font-size: 12px; margin-top: 4px; }
+.plan-q { margin: 8px 0 4px; }
 
 /* прямоугольники сложной кровли */
 .rect { display: grid; grid-template-columns: 26px 1fr 1fr 44px; grid-gap: 8px; align-items: end; }
@@ -321,17 +384,24 @@ textarea.inp { min-height: 90px; font-size: 13px; font-family: ui-monospace, Men
           <button type="button" data-act="seg" data-f="roofType" data-val="gable"><svg viewBox="0 0 30 20"><path d="M2 17 L15 4 L28 17 Z"/></svg>Двускатная</button>
           <button type="button" data-act="seg" data-f="roofType" data-val="hip"><svg viewBox="0 0 30 20"><path d="M2 17 L10 5 L20 5 L28 17 Z M10 5 L2 17 M20 5 L28 17"/></svg>Вальмовая</button>
           <button type="button" data-act="seg" data-f="roofType" data-val="shed"><svg viewBox="0 0 30 20"><path d="M2 17 L28 6 L28 17 Z"/></svg>Односкатная</button>
-          <button type="button" data-act="seg" data-f="roofType" data-val="complex"><svg viewBox="0 0 30 20"><path d="M2 17 L8 7 L16 7 L16 11 L22 11 L28 17 Z"/></svg>Сложная</button>
+          <button type="button" data-act="seg" data-f="roofType" data-val="plan"><svg viewBox="0 0 30 20"><path d="M4 3 H20 V10 H26 V17 H4 Z"/></svg>По плану</button>
         </div>
         <div class="seg c3" data-seg="cover" role="group" aria-label="Покрытие">
           <button type="button" data-act="seg" data-f="cover" data-val="metal">Металло&shy;черепица</button>
           <button type="button" data-act="seg" data-f="cover" data-val="prof">Профнастил</button>
           <button type="button" data-act="seg" data-f="cover" data-val="soft">Гибкая черепица</button>
         </div>
+        <div class="seg c2" role="group" aria-label="Как задать уклон">
+          <button type="button" data-act="seg" data-f="angleMode" data-val="h">Высота конька</button>
+          <button type="button" data-act="seg" data-f="angleMode" data-val="deg">Уклон, градусы</button>
+        </div>
         <div class="grid2">
-          <label class="field"><span>Уклон, градусов</span><input class="inp" id="f-angle" data-f="angle" type="text" inputmode="decimal" autocomplete="off"></label>
+          <label class="field" id="ridgeHBox"><span>Высота конька над стенами, м</span><input class="inp" id="f-ridgeH" data-f="ridgeH" type="text" inputmode="decimal" autocomplete="off"></label>
+          <label class="field" id="angleBox"><span>Уклон, градусов</span><input class="inp" id="f-angle" data-f="angle" type="text" inputmode="decimal" autocomplete="off"></label>
           <label class="field"><span>Свес, м</span><input class="inp" id="f-overhang" data-f="overhang" type="text" inputmode="decimal" autocomplete="off"></label>
         </div>
+        <p class="hint" id="degHint" style="margin:0"></p>
+        <label class="field" id="hipAngleBox"><span>Уклон вальм (торцы по ширине), градусов</span><input class="inp" id="f-hipAngle" data-f="hipAngle" type="text" inputmode="decimal" autocomplete="off" placeholder="Пусто — как основной"></label>
       </div>
     </div>
 
@@ -347,10 +417,47 @@ textarea.inp { min-height: 90px; font-size: 13px; font-family: ui-monospace, Men
         <button type="button" class="btn small ghost" data-act="rect-add">+ Добавить часть</button>
         <label class="field"><span>Периметр стен, м</span><input class="inp" id="f-perimeter" data-f="perimeter" type="text" inputmode="decimal" autocomplete="off" placeholder="Сумма всех наружных стен"></label>
       </div>
+      <div id="planDims" class="stack" hidden>
+        <div class="presets" role="group" aria-label="Готовая форма дома">
+          <span>Форма:</span>
+          <button type="button" class="btn small" data-act="wpreset" data-k="rect">▭</button>
+          <button type="button" class="btn small" data-act="wpreset" data-k="g">Г</button>
+          <button type="button" class="btn small" data-act="wpreset" data-k="t">Т</button>
+          <button type="button" class="btn small" data-act="wpreset" data-k="p">П</button>
+        </div>
+        <p class="note">Обойдите дом по наружным стенам от угла <b>A</b>: для каждой стены — направление и длина. Метры (17,64) или сантиметры (1764). Углы — прямые.</p>
+        <div class="tgl"><label for="f-wallSlopes">Разные уклоны по стенам<small>Например, вальмы круче основных скатов</small></label><span class="sw"><input type="checkbox" id="f-wallSlopes" data-f="wallSlopes"><i></i></span></div>
+        <div id="walls" class="walls"></div>
+        <div class="row-btns">
+          <button type="button" class="btn small" data-act="wadd">+ Стена</button>
+          <button type="button" class="btn small" data-act="wclose" id="btnClose">Замкнуть контур</button>
+        </div>
+        <p class="wstat" id="wallStatus" role="status"></p>
+      </div>
+    </div>
+
+    <div class="card" id="planCard">
+      <h2>План кровли</h2>
+      <div class="plan2d" id="plan2d"></div>
+      <div class="legend" aria-hidden="true">
+        <span><i class="lg lg-ridge"></i>Конёк</span>
+        <span><i class="lg lg-hip"></i>Рёбра</span>
+        <span><i class="lg lg-valley"></i>Ендовы</span>
+        <span><i class="lg lg-raf"></i>Стропила</span>
+        <span><i class="lg lg-eave"></i>Свес</span>
+      </div>
+      <div id="planInfo" class="pl-sum"></div>
+      <button type="button" class="btn small full" data-act="ovtoggle" id="btnOv" style="margin-top:12px">✎ Исправить размеры вручную</button>
+      <div id="ovBox" class="stack" hidden style="margin-top:10px">
+        <p class="note">Нажмите на число на плане или впишите здесь фактическую длину — в сантиметрах (1113) или метрах (11,13). Пустое поле — расчёт приложения. Исправленные числа на плане отмечены <b>*</b>, в погонаж и смету идут они.</p>
+        <div id="ovList" class="ovlist"></div>
+        <button type="button" class="btn small danger" data-act="ovreset">Сбросить все правки</button>
+      </div>
     </div>
 
     <div class="card" id="geoCard">
-      <h2>Расчёт площади</h2>
+      <h2>Схема и площадь</h2>
+      <div class="r3d" id="roof3d"></div>
       <div class="geo">
         <div class="kv big"><span>Площадь скатов</span><strong id="g-area">—</strong></div>
         <div class="kv"><span>По плану со свесами</span><strong id="g-plan">—</strong></div>
@@ -359,7 +466,7 @@ textarea.inp { min-height: 90px; font-size: 13px; font-family: ui-monospace, Men
         <div class="kv"><span>Подшивка свесов</span><strong id="g-soffit">—</strong></div>
       </div>
       <p class="warn" id="g-warn" hidden></p>
-      <p class="hint">Площадь скатов = площадь по плану ÷ cos(уклон). Формула точная, когда все скаты имеют одинаковый уклон.</p>
+      <p class="hint" id="g-hint">Площадь скатов = площадь по плану ÷ cos(уклон). Формула точная, когда все скаты имеют одинаковый уклон.</p>
     </div>
 
     <div class="card">
@@ -521,7 +628,7 @@ textarea.inp { min-height: 90px; font-size: 13px; font-family: ui-monospace, Men
     ['drain', 'Если водосток'], ['soffit', 'Если подшивка свесов']
   ];
   var CATS = ['Стропильная система', 'Кровельное покрытие', 'Изоляция', 'Доборные элементы', 'Крепёж', 'Подшивка свесов', 'Водосток', 'Прочее', 'Работы'];
-  var ROOF = { gable: 'двускатная', hip: 'вальмовая', shed: 'односкатная', complex: 'сложная' };
+  var ROOF = { gable: 'двускатная', hip: 'вальмовая', shed: 'односкатная', complex: 'сложная', plan: 'по плану' };
   var COVER = { metal: 'металлочерепица', prof: 'профнастил', soft: 'гибкая черепица' };
 
   // [id, категория, название, ед., цена, база, расход на единицу базы, условие, округлять вверх, учитывать запас]
@@ -592,12 +699,12 @@ textarea.inp { min-height: 90px; font-size: 13px; font-family: ui-monospace, Men
     return {
       v: 1, savedId: null, num: nextNum(), date: today(),
       client: '', phone: '', address: '',
-      roofType: 'hip', cover: 'metal', angle: '30', overhang: '0,5',
-      length: '12', width: '9', rects: [{ l: '12', w: '9' }, { l: '6', w: '5' }], perimeter: '',
+      roofType: 'hip', cover: 'metal', angle: '30', angleMode: 'h', ridgeH: '2,6', overhang: '0,5',
+      length: '12', width: '9', rects: [{ l: '12', w: '9' }, { l: '6', w: '5' }], perimeter: '', walls: null,
       manualLen: false, len: { ridge: '', hip: '', valley: '', eaves: '', gable: '', abut: '' },
       insulOn: false, insulThick: '150', drainOn: true, drains: '4', drainH: '3,5',
       soffitOn: true, laborOn: true, waste: '10', discount: '0',
-      qty: {}, off: {}, extras: []
+      qty: {}, off: {}, extras: [], lineOv: {}, hipAngle: '', wallSlopes: false
     };
   }
 
@@ -613,16 +720,426 @@ textarea.inp { min-height: 90px; font-size: 13px; font-family: ui-monospace, Men
   var catTimer = null;
   function saveCatalog() { clearTimeout(catTimer); catTimer = setTimeout(function () { lsSet(KEY.cat, catalog); }, 250); }
 
+  /* ---------- контур дома по точкам (стены под прямым углом) ---------- */
+  var DIRV = { R: [1, 0], D: [0, 1], L: [-1, 0], U: [0, -1] };
+  var OPP = { R: 'L', L: 'R', U: 'D', D: 'U' };
+  var TURN = { R: 'D', D: 'L', L: 'U', U: 'R' };
+  var ARROW = { L: '←', U: '↑', D: '↓', R: '→' };
+  var DIRNAME = { L: 'влево', U: 'вверх', D: 'вниз', R: 'вправо' };
+  var PRESETS = {
+    rect: [['R', '12'], ['D', '9'], ['L', '12'], ['U', '9']],
+    g: [['R', '17,64'], ['D', '28,52'], ['L', '7,28'], ['U', '11,89'], ['L', '10,36'], ['U', '16,63']],
+    t: [['R', '16'], ['D', '7'], ['L', '5'], ['D', '6'], ['L', '6'], ['U', '6'], ['L', '5'], ['U', '7']],
+    p: [['R', '16'], ['D', '12'], ['L', '5'], ['U', '6'], ['L', '6'], ['D', '6'], ['L', '5'], ['U', '12']]
+  };
+  function preset(k) { return PRESETS[k].map(function (w) { return { d: w[0], len: w[1] }; }); }
+  function wlen(v) { var n = num(v); return n > 100 ? n / 100 : n; } // больше 100 — это сантиметры
+  function letter(i) { var s = ''; do { s = String.fromCharCode(65 + i % 26) + s; i = Math.floor(i / 26) - 1; } while (i >= 0); return s; }
+  function m2s(m) { return String(Math.round(m * 100) / 100).replace('.', ','); }
+
+  function area2(poly) { var s = 0; for (var i = 0; i < poly.length; i++) { var a = poly[i], b = poly[(i + 1) % poly.length]; s += a[0] * b[1] - b[0] * a[1]; } return s / 2; }
+  function perim(poly) { var s = 0; for (var i = 0; i < poly.length; i++) { var a = poly[i], b = poly[(i + 1) % poly.length]; s += Math.abs(b[0] - a[0]) + Math.abs(b[1] - a[1]); } return s; }
+  function pip(q, poly) {
+    var inside = false;
+    for (var i = 0, j = poly.length - 1; i < poly.length; j = i++) {
+      var a = poly[i], b = poly[j];
+      if ((a[1] > q[1]) !== (b[1] > q[1]) && q[0] < (b[0] - a[0]) * (q[1] - a[1]) / (b[1] - a[1]) + a[0]) inside = !inside;
+    }
+    return inside;
+  }
+  function cen2(poly) { var x = 0, y = 0; poly.forEach(function (q) { x += q[0]; y += q[1]; }); return [x / poly.length, y / poly.length]; }
+
+  // стены → замкнутый многоугольник; соседние стены одного направления сливаются
+  function tracePoly(walls) {
+    var segs = [], res = { pts: [], labels: [], gap: [0, 0], err: '', closed: false };
+    (walls || []).forEach(function (w, i) {
+      var L = wlen(w.len);
+      if (!(L > 0) || !DIRV[w.d]) return;
+      var last = segs[segs.length - 1];
+      if (last && last.d === w.d) last.L += L; else segs.push({ d: w.d, L: L, r: i, ang: num(w.a) });
+    });
+    var x = 0, y = 0, pts = [[0, 0]];
+    segs.forEach(function (s) { x += DIRV[s.d][0] * s.L; y += DIRV[s.d][1] * s.L; pts.push([x, y]); });
+    res.gap = [x, y];
+    for (var i = 1; i < segs.length; i++) if (segs[i].d === OPP[segs[i - 1].d]) { res.err = 'Стены ' + letter(segs[i - 1].r) + ' и ' + letter(segs[i].r) + ' идут навстречу друг другу.'; return res; }
+    if (segs.length < 4) { res.err = segs.length ? 'open' : 'Введите стены дома.'; return res; }
+    if (Math.abs(x) > 0.005 || Math.abs(y) > 0.005) { res.err = 'open'; return res; }
+    pts.pop();
+    var labels = segs.map(function (s) { return letter(s.r); });
+    var f = segs[0].d, l = segs[segs.length - 1].d;
+    if (f === OPP[l]) { res.err = 'Последняя и первая стены идут навстречу друг другу.'; return res; }
+    var slopes = segs.map(function (s) { return s.ang; });
+    if (f === l) { pts.shift(); labels.shift(); slopes.shift(); }
+    var n = pts.length;
+    for (var a = 0; a < n; a++) for (var b = a + 2; b < n; b++) {
+      if (a === 0 && b === n - 1) continue;
+      var p1 = pts[a], p2 = pts[(a + 1) % n], q1 = pts[b], q2 = pts[(b + 1) % n];
+      if (Math.max(p1[0], p2[0]) >= Math.min(q1[0], q2[0]) - 1e-6 && Math.max(q1[0], q2[0]) >= Math.min(p1[0], p2[0]) - 1e-6 &&
+          Math.max(p1[1], p2[1]) >= Math.min(q1[1], q2[1]) - 1e-6 && Math.max(q1[1], q2[1]) >= Math.min(p1[1], p2[1]) - 1e-6) {
+        res.err = 'Стены пересекаются (' + labels[a] + ' и ' + labels[b] + '). Проверьте длины и направления.'; return res;
+      }
+    }
+    res.pts = pts; res.labels = labels; res.slopes = slopes; res.closed = true;
+    return res;
+  }
+
+  function outNormals(pts) {
+    var n = pts.length;
+    return pts.map(function (a, i) {
+      var b = pts[(i + 1) % n], L = Math.abs(b[0] - a[0]) + Math.abs(b[1] - a[1]) || 1;
+      var d = [(b[0] - a[0]) / L, (b[1] - a[1]) / L], nn = [d[1], -d[0]];
+      var m = [(a[0] + b[0]) / 2 + nn[0] * 1e-3, (a[1] + b[1]) / 2 + nn[1] * 1e-3];
+      return pip(m, pts) ? [-nn[0], -nn[1]] : nn;
+    });
+  }
+  function offsetPoly(pts, outs, dist) {
+    var n = pts.length;
+    return pts.map(function (v, i) {
+      var e1 = (i - 1 + n) % n, e2 = i, x, y;
+      [e1, e2].forEach(function (e) {
+        var a = pts[e], b = pts[(e + 1) % n];
+        if (Math.abs(a[1] - b[1]) < 1e-9) y = a[1] + outs[e][1] * dist; else x = a[0] + outs[e][0] * dist;
+      });
+      return [x, y];
+    });
+  }
+
+  function clip(poly, a, b, c, thr) {
+    var out = [], n = poly.length;
+    for (var i = 0; i < n; i++) {
+      var P = poly[i], Q = poly[(i + 1) % n];
+      var vp = a * P[0] + b * P[1] + c - thr, vq = a * Q[0] + b * Q[1] + c - thr, ip = vp >= -1e-12, iq = vq >= -1e-12;
+      if (ip) out.push(P);
+      if (ip !== iq) { var k = vp / (vp - vq); out.push([P[0] + (Q[0] - P[0]) * k, P[1] + (Q[1] - P[1]) * k]); }
+    }
+    var res = [];
+    out.forEach(function (q) { var l = res[res.length - 1]; if (!l || Math.abs(l[0] - q[0]) + Math.abs(l[1] - q[1]) > 1e-9) res.push(q); });
+    if (res.length > 1) { var f = res[0], l2 = res[res.length - 1]; if (Math.abs(f[0] - l2[0]) + Math.abs(f[1] - l2[1]) < 1e-9) res.pop(); }
+    return res;
+  }
+  // выпуклый A минус выпуклый C → набор выпуклых кусков
+  function cdiff(A, C) {
+    var res = [], rem = A, cc = cen2(C);
+    for (var i = 0; i < C.length && rem.length > 2; i++) {
+      var p = C[i], q = C[(i + 1) % C.length], a = -(q[1] - p[1]), b = q[0] - p[0], c = -(a * p[0] + b * p[1]);
+      if (a * cc[0] + b * cc[1] + c < 0) { a = -a; b = -b; c = -c; }
+      var out = clip(rem, -a, -b, -c, 0);
+      if (out.length > 2 && Math.abs(area2(out)) > 1e-9) res.push(out);
+      rem = clip(rem, a, b, c, 0);
+    }
+    return res;
+  }
+  function dv(pl, q) { return pl.a * q[0] + pl.b * q[1] + pl.c; }
+  // скат: высота над линией свеса h = k·d, d — расстояние от свеса (все свесы на одной высоте)
+  function mkPlane(a, b, c, k, o) { return { a: a, b: b, c: c, k: k, o: o, A: k * a, B: k * b, C: k * c }; }
+  function hv(pl, q) { return pl.A * q[0] + pl.B * q[1] + pl.C; }
+  function rectPlanes(R) { return [{ a: 1, b: 0, c: -R.x0 }, { a: -1, b: 0, c: R.x1 }, { a: 0, b: 1, c: -R.y0 }, { a: 0, b: -1, c: R.y1 }]; }
+  function rectPoly(R) { return [[R.x0, R.y0], [R.x1, R.y0], [R.x1, R.y1], [R.x0, R.y1]]; }
+  function pkey(pl) { return pl.A.toFixed(6) + ',' + pl.B.toFixed(6) + ',' + pl.C.toFixed(5); }
+
+  function mergeSegs(list) {
+    var groups = {}, order = [], out = [];
+    list.forEach(function (s) {
+      var dx = s.b[0] - s.a[0], dy = s.b[1] - s.a[1], L = Math.sqrt(dx * dx + dy * dy);
+      if (L < 1e-4) return;
+      dx /= L; dy /= L;
+      if (dx < -1e-9 || (Math.abs(dx) < 1e-9 && dy < 0)) { dx = -dx; dy = -dy; }
+      var off = dx * s.a[1] - dy * s.a[0], key = null;
+      order.forEach(function (k2) { var gr = groups[k2]; if (!key && gr.type === s.type && Math.abs(gr.dx - dx) < 1e-6 && Math.abs(gr.dy - dy) < 1e-6 && Math.abs(gr.off - off) < 1e-4) key = k2; });
+      if (!key) { key = 'g' + order.length; groups[key] = { type: s.type, dx: dx, dy: dy, off: off, iv: [] }; order.push(key); }
+      var t1 = dx * s.a[0] + dy * s.a[1], t2 = dx * s.b[0] + dy * s.b[1];
+      groups[key].iv.push([Math.min(t1, t2), Math.max(t1, t2)]);
+    });
+    order.forEach(function (k) {
+      var gr = groups[k], cur = null;
+      function emit() { var pp = function (t) { return [t * gr.dx - gr.off * gr.dy, t * gr.dy + gr.off * gr.dx]; }; out.push({ type: gr.type, a: pp(cur[0]), b: pp(cur[1]) }); }
+      gr.iv.sort(function (x, y) { return x[0] - y[0]; }).forEach(function (iv) {
+        if (cur && iv[0] <= cur[1] + 1e-4) cur[1] = Math.max(cur[1], iv[1]);
+        else { if (cur) emit(); cur = iv.slice(); }
+      });
+      if (cur) emit();
+    });
+    return out;
+  }
+  function onSeg(q, s) {
+    var dx = s.b[0] - s.a[0], dy = s.b[1] - s.a[1], L2 = dx * dx + dy * dy;
+    var t = ((q[0] - s.a[0]) * dx + (q[1] - s.a[1]) * dy) / L2;
+    if (t < -1e-6 || t > 1 + 1e-6) return false;
+    return Math.abs((q[0] - s.a[0]) * dy - (q[1] - s.a[1]) * dx) / Math.sqrt(L2) < 1e-5;
+  }
+
+  /* Кровля на все стены с одинаковым уклоном (вальмовая на любом контуре под прямым углом).
+     Высота точки = уклон × L∞-расстояние до края свеса (для таких контуров это и есть
+     «прямой скелет»): берём верхнюю огибающую вальмовых крыш над всеми максимальными
+     прямоугольниками контура. Скаты режем на выпуклые куски, линии классифицируем. */
+  var engCache = {}, engKeys = [];
+  function roofEngine(W, labels, o, ks) {
+    var key = JSON.stringify([W, o, ks]);
+    if (engCache[key]) return engCache[key];
+    var outW = outNormals(W), E = offsetPoly(W, outW, o), warn = '';
+    if (o > 0 && tracePolyCheck(E)) warn = 'Свес больше выемки в контуре — уменьшите свес.';
+
+    function uniq(v) { v.sort(function (a, b) { return a - b; }); var r = []; v.forEach(function (x) { if (!r.length || x - r[r.length - 1] > 1e-6) r.push(x); }); return r; }
+    var xs = uniq(E.map(function (q) { return q[0]; })), ys = uniq(E.map(function (q) { return q[1]; }));
+    var nx = xs.length - 1, ny = ys.length - 1, inside = [], i, j;
+    for (i = 0; i < nx; i++) { inside[i] = []; for (j = 0; j < ny; j++) inside[i][j] = pip([(xs[i] + xs[i + 1]) / 2, (ys[j] + ys[j + 1]) / 2], E); }
+    function full(i1, i2, j1, j2) {
+      if (i1 < 0 || j1 < 0 || i2 >= nx || j2 >= ny) return false;
+      for (var a = i1; a <= i2; a++) for (var b = j1; b <= j2; b++) if (!inside[a][b]) return false;
+      return true;
+    }
+    var rects = [];
+    for (var i1 = 0; i1 < nx; i1++) for (var i2 = i1; i2 < nx; i2++) for (var j1 = 0; j1 < ny; j1++) for (var j2 = j1; j2 < ny; j2++) {
+      if (!full(i1, i2, j1, j2)) continue;
+      if (full(i1 - 1, i2, j1, j2) || full(i1, i2 + 1, j1, j2) || full(i1, i2, j1 - 1, j2) || full(i1, i2, j1, j2 + 1)) continue;
+      rects.push({ x0: xs[i1], x1: xs[i2 + 1], y0: ys[j1], y1: ys[j2 + 1] });
+    }
+    // уклон стороны прямоугольника = уклон стены контура, лежащей на той же линии (с наибольшим перекрытием)
+    var nE = E.length;
+    function sideK(R, s) {
+      var best = -1, bi = 0, vert = s < 2, X = [R.x0, R.x1, R.y0, R.y1][s];
+      for (var e = 0; e < nE; e++) {
+        var a = E[e], b = E[(e + 1) % nE], ov;
+        if (vert) { if (Math.abs(a[0] - b[0]) > 1e-9 || Math.abs(a[0] - X) > 1e-6) continue; ov = Math.min(Math.max(a[1], b[1]), R.y1) - Math.max(Math.min(a[1], b[1]), R.y0); }
+        else { if (Math.abs(a[1] - b[1]) > 1e-9 || Math.abs(a[1] - X) > 1e-6) continue; ov = Math.min(Math.max(a[0], b[0]), R.x1) - Math.max(Math.min(a[0], b[0]), R.x0); }
+        if (ov > best) { best = ov; bi = e; }
+      }
+      return ks[bi];
+    }
+    rects.forEach(function (R) {
+      R.pls = rectPlanes(R).map(function (pl, s) { return mkPlane(pl.a, pl.b, pl.c, sideK(R, s), o); });
+    });
+    function roofH(q) {
+      var best = -1e9;
+      rects.forEach(function (R) {
+        if (q[0] < R.x0 - 1e-9 || q[0] > R.x1 + 1e-9 || q[1] < R.y0 - 1e-9 || q[1] > R.y1 + 1e-9) return;
+        var h = Math.min(hv(R.pls[0], q), hv(R.pls[1], q), hv(R.pls[2], q), hv(R.pls[3], q));
+        if (h > best) best = h;
+      });
+      return best;
+    }
+
+    // куски скатов
+    var pieces = [];
+    rects.forEach(function (R, ri) {
+      var pls = R.pls;
+      pls.forEach(function (f, k) {
+        var F = rectPoly(R);
+        pls.forEach(function (gm, m) { if (m !== k) F = clip(F, gm.A - f.A, gm.B - f.B, gm.C - f.C, 0); });
+        if (F.length < 3 || Math.abs(area2(F)) < 1e-8) return;
+        var parts = [F];
+        rects.forEach(function (S, sj) {
+          if (sj === ri) return;
+          var C = rectPoly(S);
+          S.pls.forEach(function (gm) { C = clip(C, gm.A - f.A, gm.B - f.B, gm.C - f.C, sj < ri ? -1e-9 : 1e-9); });
+          if (C.length < 3 || Math.abs(area2(C)) < 1e-8) return;
+          var np = []; parts.forEach(function (pp) { np = np.concat(cdiff(pp, C)); }); parts = np;
+        });
+        parts.forEach(function (pp) { if (Math.abs(area2(pp)) > 1e-6) pieces.push({ poly: pp, pl: f, key: pkey(f) }); });
+      });
+    });
+
+    // вставляем в рёбра кусков вершины соседних кусков (Т-стыки), чтобы каждое ребро было одного типа
+    var allV = [];
+    pieces.forEach(function (pc) { pc.poly.forEach(function (q) { allV.push(q); }); });
+    pieces.forEach(function (pc) {
+      var np = [], n = pc.poly.length;
+      pc.poly.forEach(function (a, ei) {
+        var b = pc.poly[(ei + 1) % n], dx = b[0] - a[0], dy = b[1] - a[1], L2 = dx * dx + dy * dy, mids = [];
+        np.push(a);
+        if (L2 < 1e-12) return;
+        allV.forEach(function (q) {
+          var tt = ((q[0] - a[0]) * dx + (q[1] - a[1]) * dy) / L2;
+          if (tt > 1e-6 && tt < 1 - 1e-6 && Math.abs((q[0] - a[0]) * dy - (q[1] - a[1]) * dx) / Math.sqrt(L2) < 1e-7) mids.push([tt, q]);
+        });
+        mids.sort(function (x, y) { return x[0] - y[0]; });
+        var lastT = -1;
+        mids.forEach(function (m) { if (m[0] - lastT > 1e-6) { np.push(m[1]); lastT = m[0]; } });
+      });
+      pc.poly = np;
+    });
+
+    // классификация рёбер кусков
+    var raw = [], parent = pieces.map(function (_, k) { return k; });
+    function find(k) { while (parent[k] !== k) { parent[k] = parent[parent[k]]; k = parent[k]; } return k; }
+    pieces.forEach(function (pc, pi) {
+      var c = cen2(pc.poly), n = pc.poly.length;
+      pc.edges = pc.poly.map(function (a, ei) {
+        var b = pc.poly[(ei + 1) % n], dx = b[0] - a[0], dy = b[1] - a[1], L = Math.sqrt(dx * dx + dy * dy);
+        if (L < 1e-6) return 'seam';
+        var nn = [dy / L, -dx / L], mid = [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2];
+        if (nn[0] * (mid[0] - c[0]) + nn[1] * (mid[1] - c[1]) < 0) nn = [-nn[0], -nn[1]];
+        var q = [mid[0] + nn[0] * 0.004, mid[1] + nn[1] * 0.004], Hq = roofH(q);
+        if (Hq < -1e8) return 'eave';
+        var df = hv(pc.pl, q) - Hq, type;
+        if (Math.abs(df) < 1e-7) {
+          for (var k = 0; k < pieces.length; k++) if (k !== pi && pieces[k].key === pc.key && pip(q, pieces[k].poly)) { parent[find(k)] = find(pi); break; }
+          return 'seam';
+        }
+        type = df < 0 ? 'valley' : (Math.abs(hv(pc.pl, a) - hv(pc.pl, b)) < 1e-6 ? 'ridge' : 'hip');
+        raw.push({ type: type, a: a, b: b, owner: pi });
+        return type;
+      });
+    });
+    var lines = mergeSegs(raw).map(function (s) {
+      var dx = s.b[0] - s.a[0], dy = s.b[1] - s.a[1], plan = Math.sqrt(dx * dx + dy * dy);
+      var dz = roofH(s.b) - roofH(s.a);
+      s.plan = plan; s.len = Math.sqrt(plan * plan + dz * dz);
+      return s;
+    });
+
+    // стропила: от каждого конька грани и от вершины, не лежащей на коньке
+    var faces = {};
+    pieces.forEach(function (pc, k) { var r = find(k); (faces[r] = faces[r] || []).push(k); });
+    var rafters = [], maxH = 0, maxLen = 0;
+    Object.keys(faces).forEach(function (r) {
+      var ids = faces[r], pl = pieces[ids[0]].pl, ridges = [], top = null, hmax = -1e9;
+      ids.forEach(function (k) {
+        var pc = pieces[k];
+        pc.poly.forEach(function (q, ei) {
+          var h = hv(pl, q); if (h > hmax + 1e-6) { hmax = h; top = q; }
+          if (pc.edges[ei] === 'ridge') ridges.push({ type: 'ridge', a: q, b: pc.poly[(ei + 1) % pc.poly.length] });
+        });
+      });
+      ridges = mergeSegs(ridges);
+      var tops = ridges.map(function (s) { return [(s.a[0] + s.b[0]) / 2, (s.a[1] + s.b[1]) / 2]; });
+      if (top && !ridges.some(function (s) { return onSeg(top, s); })) tops.push(top);
+      tops.forEach(function (T) {
+        var d = dv(pl, T);
+        if (d < 0.05) return;
+        var len = d * Math.sqrt(1 + pl.k * pl.k);
+        rafters.push({ a: [T[0] - pl.a * d, T[1] - pl.b * d], b: T, run: d, len: len });
+        maxH = Math.max(maxH, hv(pl, T)); maxLen = Math.max(maxLen, len);
+      });
+    });
+    var area3d = 0;
+    pieces.forEach(function (pc) { area3d += Math.abs(area2(pc.poly)) * Math.sqrt(1 + pc.pl.k * pc.pl.k); });
+
+    var res = {
+      W: W, labels: labels, outW: outW, E: E, o: o, ks: ks, pieces: pieces, lines: lines, rafters: rafters,
+      maxH: maxH, maxLen: maxLen, area3d: area3d, warn: warn,
+      areaW: Math.abs(area2(W)), perW: perim(W), areaE: Math.abs(area2(E)), perE: perim(E),
+      mixed: ks.some(function (k) { return Math.abs(k - ks[0]) > 1e-9; })
+    };
+    engKeys.push(key); engCache[key] = res;
+    if (engKeys.length > 6) delete engCache[engKeys.shift()];
+    return res;
+  }
+  function tracePolyCheck(E) {
+    var n = E.length;
+    for (var a = 0; a < n; a++) for (var b = a + 2; b < n; b++) {
+      if (a === 0 && b === n - 1) continue;
+      var p1 = E[a], p2 = E[(a + 1) % n], q1 = E[b], q2 = E[(b + 1) % n];
+      if (Math.max(p1[0], p2[0]) >= Math.min(q1[0], q2[0]) - 1e-6 && Math.max(q1[0], q2[0]) >= Math.min(p1[0], p2[0]) - 1e-6 &&
+          Math.max(p1[1], p2[1]) >= Math.min(q1[1], q2[1]) - 1e-6 && Math.max(q1[1], q2[1]) >= Math.min(p1[1], p2[1]) - 1e-6) return true;
+    }
+    return false;
+  }
+
   /* ---------- геометрия ---------- */
   var LEN_KEYS = ['ridge', 'hip', 'valley', 'eaves', 'gable', 'abut'];
+  function tanDeg(d) { return Math.tan(Math.min(Math.max(d, 1), 75) * Math.PI / 180); }
+
+  // walls — стены контура (со своими уклонами в поле a, если useSlopes)
+  function planGeometry(walls, useSlopes, g, o) {
+    var tp = tracePoly(walls);
+    if (tp.err) {
+      g.ok = false;
+      g.warn = tp.err === 'open' ? 'Контур не замкнут — проверьте стены или нажмите «Замкнуть контур».' : tp.err;
+      return g;
+    }
+    var ks = tp.slopes.map(function (s) { return tanDeg(useSlopes && s > 0 ? s : g.deg); });
+    var R = roofEngine(tp.pts, tp.labels, o, ks);
+    g.R = R; g.A = R.areaW; g.P = R.perW; g.plan = R.areaE; g.area = R.area3d; g.soffit = g.plan - g.A;
+    g.rise = R.maxH - o * tanDeg(g.deg); g.slope = R.maxLen; g.warn = R.warn;
+    var a = { ridge: 0, hip: 0, valley: 0, eaves: R.perE, gable: 0, abut: 0 };
+    R.lines.forEach(function (s) { a[s.type] += s.len; });
+    LEN_KEYS.forEach(function (k) { g.auto[k] = r2(a[k]); });
+    return g;
+  }
+
+  /* ручные правки длин: ключ линии = тип + концы (в см) */
+  var OV_TYPE = { ridge: 'ridge', hip: 'hip', valley: 'valley', rake: 'gable', top: 'abut' };
+  function lineKey(kind, a, b) {
+    var p1 = Math.round(a[0] * 100) + ',' + Math.round(a[1] * 100), p2 = Math.round(b[0] * 100) + ',' + Math.round(b[1] * 100);
+    return kind + ':' + (p1 < p2 ? p1 + ';' + p2 : p2 + ';' + p1);
+  }
+  function ovLen(v) { var n = num(v); return n >= 50 ? n / 100 : n; }
+  function withOv(R, p) {
+    var ov = p.lineOv || {}, res = {}, any = false;
+    Object.keys(R).forEach(function (k) { res[k] = R[k]; });
+    function map(list, kindOf) {
+      return (list || []).map(function (s) {
+        var c = {}; Object.keys(s).forEach(function (k) { c[k] = s[k]; });
+        c.key = lineKey(kindOf(s), s.a, s.b); c.calc = s.len;
+        var v = ov[c.key];
+        if (v != null && String(v).trim() !== '' && ovLen(v) > 0) { c.len = ovLen(v); c.ov = true; any = true; }
+        return c;
+      });
+    }
+    res.lines = map(R.lines, function (s) { return s.type; });
+    res.rafters = map(R.rafters, function () { return 'raf'; });
+    res.anyOv = any;
+    return res;
+  }
+
+  // горизонтальное расстояние от стены до конька при одинаковом уклоне (для пересчёта высоты в угол)
+  function ridgeRun(p) {
+    var l = num(p.length), w = num(p.width);
+    if (p.roofType === 'gable') return w / 2;
+    if (p.roofType === 'shed') return w;
+    if (p.roofType === 'hip') return num(p.hipAngle) > 0 ? w / 2 : Math.min(l, w) / 2;
+    if (p.roofType === 'plan') {
+      var tp = tracePoly(p.walls);
+      if (!tp.closed) return 0;
+      return roofEngine(tp.pts, tp.labels, 0, tp.pts.map(function () { return 1; })).maxH;
+    }
+    var r0 = (p.rects || [])[0];
+    return r0 ? Math.min(num(r0.l), num(r0.w)) / 2 : 0;
+  }
+  function degFromHeight(p) {
+    var h = num(p.ridgeH), run = ridgeRun(p);
+    if (!(h > 0) || !(run > 0)) return 0;
+    return Math.atan(h / run) * 180 / Math.PI;
+  }
 
   function geometry(p) {
+    if (p.angleMode === 'h') {
+      var p2 = {}; Object.keys(p).forEach(function (k) { p2[k] = p[k]; });
+      p2.angle = Math.round(degFromHeight(p) * 100) / 100;
+      p = p2;
+    }
+    var g = geometryBase(p);
+    if (g.ok && p.roofType !== 'complex') {
+      var R0 = planData(p, g);
+      if (R0) {
+        g.R2 = withOv(R0, p);
+        if (g.R2.anyOv) {
+          var sums = { ridge: 0, hip: 0, valley: 0, gable: 0, abut: 0 };
+          g.R2.lines.forEach(function (s) { if (OV_TYPE[s.type]) sums[OV_TYPE[s.type]] += s.len; });
+          Object.keys(sums).forEach(function (k) { g.auto[k] = r2(sums[k]); });
+        }
+      }
+    }
+    return g;
+  }
+
+  function geometryBase(p) {
     var deg = Math.min(Math.max(num(p.angle), 0), 75);
     var rad = deg * Math.PI / 180, cos = Math.cos(rad), tan = Math.tan(rad);
     var o = Math.max(0, num(p.overhang));
     var g = { deg: deg, ok: true, warn: '', A: 0, P: 0, plan: 0, area: 0, soffit: 0, rise: null, slope: null, auto: {} };
     var l = num(p.length), w = num(p.width);
 
+    if (p.roofType === 'plan') {
+      if (deg <= 0) { g.ok = false; g.warn = p.angleMode === 'h' ? 'Введите высоту конька.' : 'Введите уклон кровли в градусах.'; return g; }
+      return planGeometry(p.walls, !!p.wallSlopes, g, o);
+    }
+    if (p.roofType === 'hip' && num(p.hipAngle) > 0 && l > 0 && w > 0 && deg > 0) {
+      // вальмы (торцы по ширине) со своим уклоном
+      var ha = String(p.hipAngle);
+      return planGeometry([{ d: 'R', len: l, a: '' }, { d: 'D', len: w, a: ha }, { d: 'L', len: l, a: '' }, { d: 'U', len: w, a: ha }], true, g, o);
+    }
     if (p.roofType === 'complex') {
       var rs = p.rects || [];
       rs.forEach(function (r) { g.A += num(r.l) * num(r.w); });
@@ -633,7 +1150,7 @@ textarea.inp { min-height: 90px; font-size: 13px; font-family: ui-monospace, Men
       g.A = l * w; g.P = 2 * (l + w);
     }
     if (g.A <= 0) { g.ok = false; g.warn = 'Введите размеры дома.'; return g; }
-    if (deg <= 0) { g.ok = false; g.warn = 'Введите уклон кровли в градусах.'; return g; }
+    if (deg <= 0) { g.ok = false; g.warn = p.angleMode === 'h' ? 'Введите высоту конька.' : 'Введите уклон кровли в градусах.'; return g; }
 
     // площадь прямоугольного многоугольника, расширенного на свес: A + o·P + 4o²
     g.plan = g.A + o * g.P + 4 * o * o;
@@ -643,14 +1160,15 @@ textarea.inp { min-height: 90px; font-size: 13px; font-family: ui-monospace, Men
     var L = l + 2 * o, W = w + 2 * o, a = { ridge: 0, hip: 0, valley: 0, eaves: 0, gable: 0, abut: 0 };
     if (p.roofType === 'gable') {
       a.ridge = L; a.eaves = 2 * L; a.gable = 2 * W / cos;
-      g.rise = (W / 2) * tan; g.slope = (W / 2) / cos;
+      g.rise = (w / 2) * tan; g.slope = (W / 2) / cos;
     } else if (p.roofType === 'hip') {
       if (W > L) { var t = L; L = W; W = t; }
-      var hw = W / 2; g.rise = hw * tan; g.slope = hw / cos;
-      a.ridge = L - W; a.hip = 4 * Math.sqrt(2 * hw * hw + g.rise * g.rise); a.eaves = 2 * (L + W);
+      var hw = W / 2, hr = hw * tan; g.slope = hw / cos;
+      g.rise = hr - o * tan; // над верхом стен
+      a.ridge = L - W; a.hip = 4 * Math.sqrt(2 * hw * hw + hr * hr); a.eaves = 2 * (L + W);
     } else if (p.roofType === 'shed') {
       a.eaves = L; a.abut = L; a.gable = 2 * W / cos;
-      g.rise = W * tan; g.slope = W / cos;
+      g.rise = w * tan; g.slope = W / cos; // высокая стена над низкой
     } else {
       a.eaves = g.P + 8 * o;
     }
@@ -728,13 +1246,450 @@ textarea.inp { min-height: 90px; font-size: 13px; font-family: ui-monospace, Men
     return { g: g, len: Ln, groups: groups, order: order, mat: mat, work: work, extra: extra, sub: sub, disc: disc, discSum: discSum, total: sub - discSum };
   }
 
+  /* ---------- 3D-схема (SVG, ортогональная проекция) ---------- */
+  var WALL_H = 3;
+  var COVER_STYLE = {
+    metal: { color: '#6e1f26', label: 'Металлочерепица · RAL 3005 вишня', step: 0.35, rib: 0.37 },   // вишня: ступени + волна
+    prof:  { color: '#2f4a3b', label: 'Профнастил · RAL 6005 зелёный', rib: 0.2, ribStrong: true },       // зелёный мох: продольные гофры
+    soft:  { color: '#5a4636', label: 'Гибкая черепица · коричневая', row: 0.2, tab: 0.33 }        // ряды гонта со смещением
+  };
+  var VIEWS = [-35, 35, 145, 215];
+  var viewIdx = 0;
+
+  function hexRgb(h) { var n = parseInt(h.slice(1), 16); return [(n >> 16) & 255, (n >> 8) & 255, n & 255]; }
+  function shade(hex, k) {
+    var c = hexRgb(hex);
+    return 'rgb(' + c.map(function (v) { return Math.max(0, Math.min(255, Math.round(v * k))); }).join(',') + ')';
+  }
+  function sub(a, b) { return [a[0] - b[0], a[1] - b[1], a[2] - b[2]]; }
+  function dot(a, b) { return a[0] * b[0] + a[1] * b[1] + a[2] * b[2]; }
+  function nrm(a) { var l = Math.sqrt(dot(a, a)) || 1; return [a[0] / l, a[1] / l, a[2] / l]; }
+  function cross(a, b) { return [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]]; }
+  function newell(pts) {
+    var n = [0, 0, 0];
+    for (var i = 0; i < pts.length; i++) {
+      var a = pts[i], b = pts[(i + 1) % pts.length];
+      n[0] += (a[1] - b[1]) * (a[2] + b[2]); n[1] += (a[2] - b[2]) * (a[0] + b[0]); n[2] += (a[0] - b[0]) * (a[1] + b[1]);
+    }
+    return nrm(n);
+  }
+  function centroid(pts) { var c = [0, 0, 0]; pts.forEach(function (p) { c[0] += p[0]; c[1] += p[1]; c[2] += p[2]; }); return [c[0] / pts.length, c[1] / pts.length, c[2] / pts.length]; }
+
+  // модель дома: стены (с окнами), скаты (первое ребро — карниз), отмостка
+  function buildModel(p, g) {
+    var o = Math.max(0, num(p.overhang)), t = Math.tan(g.deg * Math.PI / 180), H = WALL_H, z0 = H - o * t;
+    var M = { walls: [], roofs: [], ground: [] };
+
+    function wall(pts, cx, cy, door) { M.walls.push({ pts: pts, c: [cx, cy], door: !!door }); }
+    function roof(pts) { M.roofs.push({ pts: pts }); }
+    function box(x0, y0, l, w, tops, door) {
+      // tops: высота верха стены в 4 углах [x0y0, x1y0, x1y1, x0y1] и доп. точка фронтона
+      var cx = x0 + l / 2, cy = y0 + w / 2, x1 = x0 + l, y1 = y0 + w;
+      wall([[x0, y0, 0], [x1, y0, 0], [x1, y0, tops[1]], [x0, y0, tops[0]]], cx, cy, door);
+      wall([[x1, y0, 0], [x1, y1, 0]].concat(tops.gR ? [[x1, y1, tops[2]], tops.gR, [x1, y0, tops[1]]] : [[x1, y1, tops[2]], [x1, y0, tops[1]]]), cx, cy);
+      wall([[x1, y1, 0], [x0, y1, 0], [x0, y1, tops[3]], [x1, y1, tops[2]]], cx, cy);
+      wall([[x0, y1, 0], [x0, y0, 0]].concat(tops.gL ? [[x0, y0, tops[0]], tops.gL, [x0, y1, tops[3]]] : [[x0, y0, tops[0]], [x0, y1, tops[3]]]), cx, cy);
+      M.ground.push([[x0 - 1, y0 - 1, 0], [x1 + 1, y0 - 1, 0], [x1 + 1, y1 + 1, 0], [x0 - 1, y1 + 1, 0]]);
+    }
+    function hip(x0, y0, l, w, door) {
+      box(x0, y0, l, w, [H, H, H, H], door);
+      var swap = w > l, L = swap ? w : l, W = swap ? l : w, zr = H + (W / 2) * t;
+      function P(u, v, z) { return swap ? [x0 + v, y0 + u, z] : [x0 + u, y0 + v, z]; }
+      var a = P(-o, -o, z0), b = P(L + o, -o, z0), c = P(L + o, W + o, z0), d = P(-o, W + o, z0);
+      var r1 = P(W / 2, W / 2, zr), r2 = P(L - W / 2, W / 2, zr);
+      if (swap) { roof([b, a, r1, r2]); roof([a, d, r1]); roof([d, c, r2, r1]); roof([c, b, r2]); }
+      else { roof([a, b, r2, r1]); roof([b, c, r2]); roof([c, d, r1, r2]); roof([d, a, r1]); }
+    }
+
+    var l = num(p.length), w = num(p.width);
+    if (p.roofType === 'gable') {
+      var zr = H + (w / 2) * t, tops = [H, H, H, H];
+      tops.gR = [l, w / 2, zr]; tops.gL = [0, w / 2, zr];
+      box(0, 0, l, w, tops, true);
+      roof([[-o, -o, z0], [l + o, -o, z0], [l + o, w / 2, zr], [-o, w / 2, zr]]);
+      roof([[l + o, w + o, z0], [-o, w + o, z0], [-o, w / 2, zr], [l + o, w / 2, zr]]);
+    } else if (p.roofType === 'shed') {
+      var zh = H + w * t, zh2 = H + (w + o) * t;
+      box(0, 0, l, w, [H, H, zh, zh], true);
+      roof([[-o, -o, z0], [l + o, -o, z0], [l + o, w + o, zh2], [-o, w + o, zh2]]);
+    } else if (p.roofType === 'hip' && !g.R) {
+      hip(0, 0, l, w, true);
+    } else if (g.R) {
+      var R = g.R;
+      var Wp = R.W, nW = Wp.length;
+      Wp.forEach(function (a, i) {
+        var b = Wp[(i + 1) % nW], on = R.outW[i];
+        M.walls.push({ pts: [[a[0], a[1], 0], [b[0], b[1], 0], [b[0], b[1], H], [a[0], a[1], H]], out: [on[0], on[1], 0], door: i === 0 });
+      });
+      M.ground.push(offsetPoly(Wp, R.outW, o + 1).map(function (q) { return [q[0], q[1], 0]; }));
+      R.pieces.forEach(function (pc) {
+        var pl = pc.pl;
+        M.roofs.push({
+          pts: pc.poly.map(function (q) { return [q[0], q[1], z0 + hv(pl, q)]; }),
+          O: [-pl.a * pl.c, -pl.b * pl.c, z0], e: [-pl.b, pl.a, 0], edges: pc.edges
+        });
+      });
+    } else {
+      // сложная: части стыкуются условно — сзади слева, спереди справа, сзади справа...
+      var rs = (p.rects || []).filter(function (r) { return num(r.l) > 0 && num(r.w) > 0; });
+      if (!rs.length) return M;
+      var l0 = num(rs[0].l), w0 = num(rs[0].w);
+      hip(0, 0, l0, w0, true);
+      var backX = 0, frontX = l0;
+      rs.slice(1).forEach(function (r, i) {
+        var li = num(r.l), wi = num(r.w);
+        if (i % 2 === 0) { hip(backX, w0, li, wi); backX += li; if (backX > l0) backX = 0; }
+        else { frontX -= li; if (frontX < 0) frontX = 0; hip(frontX, -wi, li, wi); }
+      });
+    }
+    return M;
+  }
+
+  function roofSVG(p, pre) {
+    var g = geometry(p);
+    if (!g.ok) return '<div class="r3d-empty">' + esc(g.warn || 'Введите размеры дома') + '</div>';
+    var M = buildModel(p, g);
+    if (!M.roofs.length) return '<div class="r3d-empty">Введите размеры частей дома</div>';
+
+    var th = VIEWS[viewIdx] * Math.PI / 180, ph = 26 * Math.PI / 180;
+    var ct = Math.cos(th), st = Math.sin(th), cp = Math.cos(ph), sp = Math.sin(ph);
+    var cam = [-cp * st, -cp * ct, sp];
+    var light = nrm([cam[0] * 0.55 - ct * 0.55, cam[1] * 0.55 + st * 0.55, 0.75]);
+    function proj(q) { var X = q[0] * ct - q[1] * st, Y = q[0] * st + q[1] * ct; return [X, -(q[2] * cp + Y * sp), Y * cp - q[2] * sp]; }
+    var minX = 1e9, maxX = -1e9, minY = 1e9, maxY = -1e9;
+    function P2(q) { var r = proj(q); if (r[0] < minX) minX = r[0]; if (r[0] > maxX) maxX = r[0]; if (r[1] < minY) minY = r[1]; if (r[1] > maxY) maxY = r[1]; return r; }
+    function pts2(arr) { return arr.map(function (q) { var r = P2(q); return r[0].toFixed(3) + ',' + r[1].toFixed(3); }).join(' '); }
+    function seg(a, b) { var A = P2(a), B = P2(b); return 'M' + A[0].toFixed(3) + ' ' + A[1].toFixed(3) + 'L' + B[0].toFixed(3) + ' ' + B[1].toFixed(3); }
+    function depth(pts) { return proj(centroid(pts))[2]; }
+    function lum(n) { return Math.min(1.1, 0.52 + 0.6 * Math.max(0, dot(n, light))); }
+    var VE = ' vector-effect="non-scaling-stroke"';
+    var cover = COVER_STYLE[p.cover] || COVER_STYLE.metal, out = '', defs = '', k = 0;
+
+    // отмостка
+    M.ground.forEach(function (gp) { out += '<polygon points="' + pts2(gp) + '" style="fill:var(--ground)"/>'; });
+
+    // стены: видимые, от дальних к ближним
+    var walls = M.walls.map(function (wf) {
+      var n = newell(wf.pts), cc = centroid(wf.pts);
+      if (dot(n, wf.out ? wf.out : [cc[0] - wf.c[0], cc[1] - wf.c[1], 0]) < 0) n = [-n[0], -n[1], -n[2]];
+      return { f: wf, n: n, d: depth(wf.pts) };
+    }).filter(function (x) { return dot(x.n, cam) > 0.02; });
+    walls.sort(function (a, b) { return b.d - a.d; });
+    walls.forEach(function (x) {
+      var f = x.f, n = x.n, base = '#e2d5bd', kk = lum(n);
+      out += '<polygon points="' + pts2(f.pts) + '" fill="' + shade(base, kk) + '" stroke="' + shade(base, kk * 0.72) + '" stroke-width="0.8" stroke-linejoin="round"' + VE + '/>';
+      // окна и дверь
+      var A = f.pts[0], B = f.pts[1], len = Math.sqrt(dot(sub(B, A), sub(B, A)));
+      if (len < 2) return;
+      var u = nrm(sub(B, A)), off = [n[0] * 0.03, n[1] * 0.03, 0];
+      function at(s, z) { return [A[0] + u[0] * s + off[0], A[1] + u[1] * s + off[1], z]; }
+      var items = [], doorAt = f.door ? len / 2 : -1;
+      // окна равномерно по участкам стены (с дверью — два участка по бокам от неё)
+      function spread(from, to) {
+        var span = to - from, n = Math.floor(span / 3);
+        for (var i = 0; i < n; i++) items.push(from + (i + 0.5) * span / n);
+      }
+      if (f.door) { spread(0.3, len / 2 - 0.8); spread(len / 2 + 0.8, len - 0.3); } else spread(0.3, len - 0.3);
+      items.forEach(function (s) {
+        var q = [at(s - 0.6, 0.9), at(s + 0.6, 0.9), at(s + 0.6, 2.2), at(s - 0.6, 2.2)];
+        out += '<polygon points="' + pts2(q) + '" fill="' + shade('#3f5868', 0.75 + 0.3 * kk) + '" stroke="#f4f0e8" stroke-width="1.2"' + VE + '/>';
+        out += '<path d="' + seg(at(s, 0.9), at(s, 2.2)) + seg(at(s - 0.6, 1.65), at(s + 0.6, 1.65)) + '" stroke="#f4f0e8" stroke-width="1"' + VE + '/>';
+      });
+      if (doorAt > 0) {
+        var dq = [at(doorAt - 0.5, 0), at(doorAt + 0.5, 0), at(doorAt + 0.5, 2.1), at(doorAt - 0.5, 2.1)];
+        out += '<polygon points="' + pts2(dq) + '" fill="' + shade('#6b4a33', kk) + '" stroke="' + shade('#6b4a33', 0.6) + '" stroke-width="1"' + VE + '/>';
+      }
+    });
+
+    // скаты
+    var roofs = M.roofs.map(function (rf) {
+      var n = newell(rf.pts); if (n[2] < 0) n = [-n[0], -n[1], -n[2]];
+      return { f: rf, n: n, d: depth(rf.pts) };
+    }).filter(function (x) { return dot(x.n, cam) > 0.01; });
+    roofs.sort(function (a, b) { return b.d - a.d; });
+    var gutter = p.drainOn;
+    roofs.forEach(function (x) {
+      var f = x.f, n = x.n, kk = lum(n), id = 'rc-' + pre + '-' + (k++);
+      var poly = pts2(f.pts);
+      defs += '<clipPath id="' + id + '"><polygon points="' + poly + '"/></clipPath>';
+      var fill = shade(cover.color, kk);
+      // у кусков сложной кровли обводка цветом заливки прячет швы между кусками одного ската
+      out += '<polygon points="' + poly + '" fill="' + fill + '"' + (f.edges ? ' stroke="' + fill + '" stroke-width="0.8" stroke-linejoin="round"' + VE : '') + '/>';
+
+      // текстура: координаты вдоль карниза (e) и вверх по скату (s)
+      var O = f.O || f.pts[0], e = f.e ? nrm(f.e) : nrm(sub(f.pts[1], f.pts[0])), sv = cross(n, e);
+      if (sv[2] < 0) sv = [-sv[0], -sv[1], -sv[2]];
+      var uMin = 1e9, uMax = -1e9, vMin = 1e9, vMax = -1e9;
+      f.pts.forEach(function (q) { var d = sub(q, O), uu = dot(d, e), vv = dot(d, sv); uMin = Math.min(uMin, uu); uMax = Math.max(uMax, uu); vMin = Math.min(vMin, vv); vMax = Math.max(vMax, vv); });
+      function Q(uu, vv) { return [O[0] + e[0] * uu + sv[0] * vv, O[1] + e[1] * uu + sv[1] * vv, O[2] + e[2] * uu + sv[2] * vv]; }
+      var dDark = '', dLight = '', v, uu;
+      if (cover.step) {
+        for (v = vMin + cover.step; v < vMax; v += cover.step) { dDark += seg(Q(uMin, v), Q(uMax, v)); dLight += seg(Q(uMin, v + 0.04), Q(uMax, v + 0.04)); }
+        var dRib = '';
+        for (uu = Math.ceil(uMin / cover.rib) * cover.rib; uu < uMax; uu += cover.rib) dRib += seg(Q(uu, vMin), Q(uu, vMax));
+        out += '<g clip-path="url(#' + id + ')"><path d="' + dRib + '" stroke="rgba(0,0,0,.16)" stroke-width="0.7"' + VE + '/>' +
+          '<path d="' + dLight + '" stroke="rgba(255,255,255,.18)" stroke-width="0.8"' + VE + '/><path d="' + dDark + '" stroke="rgba(0,0,0,.42)" stroke-width="1.1"' + VE + '/></g>';
+      } else if (cover.ribStrong) {
+        for (uu = Math.ceil(uMin / cover.rib) * cover.rib; uu < uMax; uu += cover.rib) { dDark += seg(Q(uu, vMin), Q(uu, vMax)); dLight += seg(Q(uu + 0.05, vMin), Q(uu + 0.05, vMax)); }
+        out += '<g clip-path="url(#' + id + ')"><path d="' + dLight + '" stroke="rgba(255,255,255,.2)" stroke-width="0.8"' + VE + '/><path d="' + dDark + '" stroke="rgba(0,0,0,.38)" stroke-width="1"' + VE + '/></g>';
+      } else {
+        var row = 0, dTab = '';
+        for (v = vMin + cover.row; v < vMax; v += cover.row, row++) {
+          dDark += seg(Q(uMin, v), Q(uMax, v));
+          var sh = (row % 2) * cover.tab / 2;
+          for (uu = Math.floor(uMin / cover.tab) * cover.tab + sh; uu < uMax; uu += cover.tab) dTab += seg(Q(uu, v - cover.row), Q(uu, v));
+        }
+        out += '<g clip-path="url(#' + id + ')"><path d="' + dTab + '" stroke="rgba(0,0,0,.22)" stroke-width="0.6"' + VE + '/><path d="' + dDark + '" stroke="rgba(0,0,0,.35)" stroke-width="0.9"' + VE + '/></g>';
+      }
+
+      // контур: карниз (желоб, если есть водосток), остальное — коньковые элементы
+      var cap = shade(cover.color, 0.55);
+      if (f.edges) {
+        var dLine = '', dEave = '', dVal = '', np = f.pts.length;
+        f.edges.forEach(function (tp, ei) {
+          var s2 = seg(f.pts[ei], f.pts[(ei + 1) % np]);
+          if (tp === 'eave') dEave += s2; else if (tp === 'valley') dVal += s2; else if (tp !== 'seam') dLine += s2;
+        });
+        out += (dVal ? '<path d="' + dVal + '" stroke="' + shade(cover.color, 0.4) + '" stroke-width="1.6" stroke-linecap="round"' + VE + '/>' : '') +
+          (dLine ? '<path d="' + dLine + '" stroke="' + cap + '" stroke-width="2.4" stroke-linecap="round"' + VE + '/>' : '') +
+          (dEave ? '<path d="' + dEave + '" stroke="' + (gutter ? '#a7adb2' : cap) + '" stroke-width="' + (gutter ? 3 : 1.4) + '" stroke-linecap="round"' + VE + '/>' : '');
+        return;
+      }
+      out += '<polygon points="' + poly + '" fill="none" stroke="' + cap + '" stroke-width="1" stroke-linejoin="round"' + VE + '/>';
+      var dCap = '';
+      for (var i = 1; i < f.pts.length; i++) dCap += seg(f.pts[i], f.pts[(i + 1) % f.pts.length]);
+      out += '<path d="' + dCap + '" stroke="' + cap + '" stroke-width="2.4" stroke-linecap="round"' + VE + '/>';
+      out += '<path d="' + seg(f.pts[0], f.pts[1]) + '" stroke="' + (gutter ? '#a7adb2' : cap) + '" stroke-width="' + (gutter ? 3 : 1.4) + '" stroke-linecap="round"' + VE + '/>';
+    });
+
+    var pad = 0.8, W = maxX - minX + 2 * pad, Hh = maxY - minY + 2 * pad;
+    var vb = (minX - pad).toFixed(2) + ' ' + (minY - pad).toFixed(2) + ' ' + W.toFixed(2) + ' ' + Hh.toFixed(2);
+    var tag = '<div class="r3d-bar"><span class="r3d-tag"><i style="background:' + cover.color + '"></i>' + esc(cover.label) + '</span>' +
+      '<button type="button" class="rot" data-act="rot" aria-label="Повернуть схему">↻ Повернуть</button></div>';
+    var note = p.roofType === 'complex' ? '<p class="r3d-note">Части дома расставлены условно, площадь считается по размерам.</p>' : '';
+    return tag + '<svg viewBox="' + vb + '" role="img" aria-label="Схема кровли: ' + esc(ROOF[p.roofType]) + ', ' + esc(COVER[p.cover]) + '"><defs>' + defs + '</defs>' + out + '</svg>' + note;
+  }
+
+  /* ---------- план кровли (вид сверху, размеры в см) ---------- */
+  function planData(p, g) {
+    var o = Math.max(0, num(p.overhang)), cos = Math.cos(g.deg * Math.PI / 180);
+    if (g.R) return g.R;
+    var l = num(p.length), w = num(p.width), W = [[0, 0], [l, 0], [l, w], [0, w]];
+    if (p.roofType === 'hip') { var tk = tanDeg(g.deg); return roofEngine(W, ['A', 'B', 'C', 'D'], o, [tk, tk, tk, tk]); }
+    var outW = outNormals(W), E = offsetPoly(W, outW, o), lines = [], rafters = [], pieces = [];
+    if (p.roofType === 'gable') {
+      var run = w / 2 + o, rk = run / cos;
+      lines.push({ type: 'ridge', a: [-o, w / 2], b: [l + o, w / 2], len: l + 2 * o });
+      [-o, l + o].forEach(function (x) {
+        lines.push({ type: 'rake', a: [x, -o], b: [x, w / 2], len: rk });
+        lines.push({ type: 'rake', a: [x, w / 2], b: [x, w + o], len: rk });
+      });
+      rafters.push({ a: [l / 2, -o], b: [l / 2, w / 2], len: rk }, { a: [l / 2, w + o], b: [l / 2, w / 2], len: rk });
+      pieces.push({ poly: [[-o, -o], [l + o, -o], [l + o, w / 2], [-o, w / 2]], pl: { a: 0, b: 1, c: o } });
+      pieces.push({ poly: [[-o, w / 2], [l + o, w / 2], [l + o, w + o], [-o, w + o]], pl: { a: 0, b: -1, c: w + o } });
+    } else if (p.roofType === 'shed') {
+      var rs = (w + 2 * o) / cos;
+      [-o, l + o].forEach(function (x) { lines.push({ type: 'rake', a: [x, -o], b: [x, w + o], len: rs }); });
+      lines.push({ type: 'top', a: [-o, w + o], b: [l + o, w + o], len: l + 2 * o });
+      rafters.push({ a: [l / 2, -o], b: [l / 2, w + o], len: rs });
+      pieces.push({ poly: E, pl: { a: 0, b: 1, c: o } });
+    } else return null;
+    return { W: W, labels: ['A', 'B', 'C', 'D'], outW: outW, E: E, o: o, lines: lines, rafters: rafters, pieces: pieces };
+  }
+
+  function cmInt(m) { return String(Math.round(m * 100)); }
+  function cmTxt(m) { var v = Math.round(m * 1000) / 10; return (Math.abs(v % 1) < 0.05 ? String(Math.round(v)) : v.toFixed(1)).replace('.', ','); }
+
+  function planSVG(p) {
+    var g = geometry(p);
+    if (!g.ok) return '<div class="r3d-empty">' + esc(g.warn || 'Введите размеры дома') + '</div>';
+    var R = g.R2;
+    if (!R) return '<div class="r3d-empty">Для этого типа план не строится. Выберите «По плану».</div>';
+    var W = R.W, E = R.E, o = R.o, n = W.length, cover = COVER_STYLE[p.cover] || COVER_STYLE.metal;
+    var minX = 1e9, maxX = -1e9, minY = 1e9, maxY = -1e9;
+    W.forEach(function (q) { minX = Math.min(minX, q[0]); maxX = Math.max(maxX, q[0]); minY = Math.min(minY, q[1]); maxY = Math.max(maxY, q[1]); });
+    var big = Math.max(maxX - minX, maxY - minY), fs = Math.max(0.3, big / 26);
+    var d1 = o + 0.4 + fs * 1.3, d2 = d1 + fs * 2.4, pad = d2 + fs * 1.6;
+    var VE = ' vector-effect="non-scaling-stroke"';
+    function P(q) { return q[0].toFixed(3) + ',' + q[1].toFixed(3); }
+    function line(a, b, style, w, dash) { return '<line x1="' + a[0].toFixed(3) + '" y1="' + a[1].toFixed(3) + '" x2="' + b[0].toFixed(3) + '" y2="' + b[1].toFixed(3) + '" style="stroke:' + style + '" stroke-width="' + w + '" stroke-linecap="round"' + (dash ? ' stroke-dasharray="' + dash + '"' : '') + VE + '/>'; }
+    function text(x, y, s, color, rot, weight, key) {
+      return '<text x="' + x.toFixed(3) + '" y="' + y.toFixed(3) + '" font-size="' + fs.toFixed(3) + '" text-anchor="middle" dominant-baseline="central"' +
+        (key ? ' data-act="lov" data-key="' + esc(key) + '"' : '') +
+        (rot ? ' transform="rotate(-90 ' + x.toFixed(3) + ' ' + y.toFixed(3) + ')"' : '') +
+        ' style="fill:' + color + ';stroke:var(--surface-2);stroke-width:' + (fs * 0.3).toFixed(3) + 'px;paint-order:stroke;stroke-linejoin:round;font-weight:' + (weight || 600) + '">' + esc(s) + '</text>';
+    }
+    var out = '';
+
+    // скаты — лёгкая заливка по направлению ската
+    out += '<g opacity="0.3">';
+    (R.pieces || []).forEach(function (pc) {
+      var col = shade(cover.color, 1.25 + 0.45 * (-0.6 * pc.pl.a - 0.8 * pc.pl.b));
+      out += '<polygon points="' + pc.poly.map(P).join(' ') + '" fill="' + col + '" stroke="' + col + '" stroke-width="0.8" stroke-linejoin="round"' + VE + '/>';
+    });
+    out += '</g>';
+    out += '<polygon points="' + E.map(P).join(' ') + '" fill="none" style="stroke:var(--muted)" stroke-width="1.2" stroke-dasharray="5 4"' + VE + '/>';
+    out += '<polygon points="' + W.map(P).join(' ') + '" fill="none" style="stroke:var(--l-wall)" stroke-width="2" stroke-linejoin="miter"' + VE + '/>';
+
+    // стропила, ендовы, рёбра, конёк
+    var lbl = '';
+    (R.rafters || []).forEach(function (r) {
+      out += line(r.a, r.b, 'var(--l-raf)', 1.6);
+      var dx = r.b[0] - r.a[0], dy = r.b[1] - r.a[1], L = Math.sqrt(dx * dx + dy * dy) || 1;
+      var m = [r.a[0] + dx * 0.22, r.a[1] + dy * 0.22], nn = [-dy / L, dx / L];
+      var off = Math.abs(dx) > Math.abs(dy) ? fs * 0.75 : fs * 1.2;
+      lbl += text(m[0] + nn[0] * off, m[1] + nn[1] * off, cmInt(r.len) + (r.ov ? '*' : ''), 'var(--l-raf)', false, r.ov ? 800 : 600, r.key);
+    });
+    var order = { rake: 0, top: 0, valley: 1, hip: 2, ridge: 3 };
+    (R.lines || []).slice().sort(function (a, b) { return order[a.type] - order[b.type]; }).forEach(function (s) {
+      var col = s.type === 'valley' ? 'var(--l-valley)' : (s.type === 'rake' || s.type === 'top') ? 'var(--muted)' : 'var(--l-ridge)';
+      out += line(s.a, s.b, col, s.type === 'ridge' ? 3.2 : 2.2);
+      var dx = s.b[0] - s.a[0], dy = s.b[1] - s.a[1], L = Math.sqrt(dx * dx + dy * dy) || 1, m = [(s.a[0] + s.b[0]) / 2, (s.a[1] + s.b[1]) / 2];
+      if (s.type === 'ridge') {
+        // подпись конька — над линией, чтобы не закрыть стропила
+        if (L > fs * 6) lbl += text(s.a[0] + dx * 0.3, s.a[1] + dy * 0.3, cmInt(s.len) + (s.ov ? '*' : ''), col, false, s.ov ? 800 : 600, s.key);
+        else {
+          var nr = Math.abs(dx) > Math.abs(dy) ? [0, -fs * 1.1] : [fs * 1.8, 0];
+          lbl += text(m[0] + nr[0], m[1] + nr[1], cmInt(s.len) + (s.ov ? '*' : ''), col, false, s.ov ? 800 : 600, s.key);
+        }
+      } else {
+        var nn = [-dy / L, dx / L];
+        if (nn[1] > 0 || (Math.abs(nn[1]) < 1e-9 && nn[0] < 0)) nn = [-nn[0], -nn[1]];
+        lbl += text(m[0] + nn[0] * fs * 0.9, m[1] + nn[1] * fs * 0.9, cmInt(s.len) + (s.ov ? '*' : ''), col, false, s.ov ? 800 : 600, s.key);
+      }
+    });
+
+    // размеры стен: выносные линии, размерная линия с засечками, текст
+    var dims = '';
+    function dim(a, b, nrm2, dist) {
+      var A = [a[0] + nrm2[0] * dist, a[1] + nrm2[1] * dist], B = [b[0] + nrm2[0] * dist, b[1] + nrm2[1] * dist];
+      var s0 = 0.25, ex = fs * 0.35;
+      dims += line([a[0] + nrm2[0] * s0, a[1] + nrm2[1] * s0], [A[0] + nrm2[0] * ex, A[1] + nrm2[1] * ex], 'var(--muted)', 0.6);
+      dims += line([b[0] + nrm2[0] * s0, b[1] + nrm2[1] * s0], [B[0] + nrm2[0] * ex, B[1] + nrm2[1] * ex], 'var(--muted)', 0.6);
+      dims += line(A, B, 'var(--fg)', 0.9);
+      var tk = fs * 0.32;
+      [A, B].forEach(function (q) { dims += line([q[0] - tk, q[1] + tk], [q[0] + tk, q[1] - tk], 'var(--fg)', 1.3); });
+      var horiz = Math.abs(b[1] - a[1]) < 1e-9, L = Math.abs(b[0] - a[0]) + Math.abs(b[1] - a[1]);
+      var m = [(A[0] + B[0]) / 2 + nrm2[0] * fs * 0.62, (A[1] + B[1]) / 2 + nrm2[1] * fs * 0.62];
+      dims += text(m[0], m[1], cmTxt(L), 'var(--fg)', !horiz, 500);
+    }
+    W.forEach(function (a, i) { dim(a, W[(i + 1) % n], R.outW[i], d1); });
+    function sideHasFull(axis, val, span) {
+      return W.some(function (a, i) {
+        var b = W[(i + 1) % n];
+        return axis === 'y' ? (Math.abs(a[1] - val) < 1e-6 && Math.abs(b[1] - val) < 1e-6 && Math.abs(Math.abs(b[0] - a[0]) - span) < 1e-6)
+          : (Math.abs(a[0] - val) < 1e-6 && Math.abs(b[0] - val) < 1e-6 && Math.abs(Math.abs(b[1] - a[1]) - span) < 1e-6);
+      });
+    }
+    if (!sideHasFull('y', minY, maxX - minX)) dim([minX, minY], [maxX, minY], [0, -1], d2);
+    if (!sideHasFull('x', minX, maxY - minY)) dim([minX, minY], [minX, maxY], [-1, 0], d2);
+
+    // буквы углов — как в списке стен
+    var lt = '';
+    W.forEach(function (v, i) {
+      var a = R.outW[(i - 1 + n) % n], b = R.outW[i], dx = a[0] + b[0], dy = a[1] + b[1], L = Math.sqrt(dx * dx + dy * dy) || 1;
+      lt += text(v[0] + dx / L * fs * 0.85, v[1] + dy / L * fs * 0.85, (R.labels && R.labels[i]) || letter(i), 'var(--muted)', false, 700);
+    });
+
+    var vb = (minX - pad).toFixed(2) + ' ' + (minY - pad).toFixed(2) + ' ' + (maxX - minX + 2 * pad).toFixed(2) + ' ' + (maxY - minY + 2 * pad).toFixed(2);
+    return '<svg viewBox="' + vb + '" role="img" aria-label="План кровли с размерами в сантиметрах">' + out + dims + lbl + lt + '</svg>';
+  }
+
+  function planInfo(p, g) {
+    if (!g.ok) return '';
+    var R = g.R2; if (!R) return '';
+    var sums = { ridge: [0, 0], hip: [0, 0], valley: [0, 0] };
+    (R.lines || []).forEach(function (s) { if (sums[s.type]) { sums[s.type][0]++; sums[s.type][1] += s.len; } });
+    var raf = (R.rafters || []).map(function (r) { return r.len; }), rmax = raf.length ? Math.max.apply(null, raf) : 0;
+    function row(name, s) { return s[0] ? '<span>' + name + ' · ' + s[0] + ' шт</span><span class="v">' + fmt(s[1], 2) + ' м</span>' : ''; }
+    return row('Конёк', sums.ridge) + row('Рёбра', sums.hip) + row('Ендовы', sums.valley) +
+      (rmax ? '<span>Самое длинное стропило</span><span class="v">' + fmt(rmax, 2) + ' м</span>' : '') +
+      '<span>Карниз по свесу</span><span class="v">' + fmt(perim(R.E), 2) + ' м</span>' +
+      '<span class="s">Размеры на плане в сантиметрах. Длины конька, рёбер, ендов и стропил — по скату, со свесом ' + fmt(R.o * 100, 0) + ' см. ' +
+      (R.mixed ? 'Уклоны скатов — по стенам (основной ' + fmt(g.deg, 1) + '°). Свесы на одной высоте.' : 'Все скаты с одинаковым уклоном ' + fmt(g.deg, 1) + '°.') + '</span>';
+  }
+
+  var OV_NAME = { ridge: 'Конёк', hip: 'Ребро', valley: 'Ендова', rake: 'Фронтон', top: 'Верхний край', raf: 'Стропило' };
+  var OV_CLS = { ridge: 'lg-ridge', hip: 'lg-hip', valley: 'lg-valley', rake: 'lg-eave', top: 'lg-eave', raf: 'lg-raf' };
+  function renderOv(g) {
+    var R = g && g.R2, html = '', cnt = {}, i = 0, ov = P.lineOv || {};
+    if (!R) { $('ovList').innerHTML = ''; return; }
+    var items = R.lines.map(function (s) { return { k: s.type, s: s }; }).concat(R.rafters.map(function (s) { return { k: 'raf', s: s }; }));
+    var ordr = { ridge: 0, hip: 1, valley: 2, rake: 3, top: 4, raf: 5 };
+    items.sort(function (a, b) { return ordr[a.k] - ordr[b.k]; });
+    items.forEach(function (it) {
+      cnt[it.k] = (cnt[it.k] || 0) + 1;
+      var v = ov[it.s.key] == null ? '' : ov[it.s.key];
+      html += '<div class="ovrow" data-row="' + esc(it.s.key) + '"><i class="lg ' + OV_CLS[it.k] + '"></i><label for="ov-' + i + '">' + OV_NAME[it.k] + ' ' + cnt[it.k] + '</label>' +
+        '<span class="calc">расчёт ' + cmInt(it.s.calc) + '</span><input class="inp' + (String(v).trim() ? ' changed' : '') + '" id="ov-' + i + '" data-ov="' + esc(it.s.key) + '" type="text" inputmode="decimal" autocomplete="off" placeholder="' + cmInt(it.s.calc) + '" value="' + esc(v) + '"></div>';
+      i++;
+    });
+    $('ovList').innerHTML = html;
+  }
+  function focusOv(key) {
+    $('ovBox').hidden = false; renderOv(geometry(P));
+    var rows = document.querySelectorAll('.ovrow');
+    for (var i = 0; i < rows.length; i++) if (rows[i].getAttribute('data-row') === key) {
+      var row = rows[i], inp = row.querySelector('input');
+      row.classList.add('flash'); setTimeout(function () { row.classList.remove('flash'); }, 1500);
+      try { row.scrollIntoView({ block: 'center' }); } catch (e) { row.scrollIntoView(); }
+      inp.focus(); return;
+    }
+  }
+
+  /* ---------- контур: редактор стен ---------- */
+  function renderWalls() {
+    var ws = P.walls || [], n = ws.length, html = '';
+    ws.forEach(function (w, i) {
+      html += '<div class="wrow"><span class="wl">' + letter(i) + '→' + letter(n ? (i + 1) % n : 0) + '</span><span class="dirs" role="group" aria-label="Направление стены ' + letter(i) + '">' +
+        ['L', 'U', 'D', 'R'].map(function (d) {
+          return '<button type="button" data-act="wdir" data-i="' + i + '" data-d="' + d + '" aria-pressed="' + (w.d === d) + '" aria-label="' + DIRNAME[d] + '">' + ARROW[d] + '</button>';
+        }).join('') +
+        '</span><input class="inp" id="w-' + i + '" data-wall="' + i + '" type="text" inputmode="decimal" autocomplete="off" value="' + esc(w.len) + '" placeholder="м" aria-label="Длина стены ' + letter(i) + '"><button type="button" class="icon-btn" data-act="wdel" data-i="' + i + '" aria-label="Удалить стену ' + letter(i) + '">×</button></div>';
+    });
+    $('walls').innerHTML = html;
+    if (P.wallSlopes) {
+      var rows = $('walls').querySelectorAll('.wrow');
+      ws.forEach(function (w, i) {
+        var d = document.createElement('div'); d.className = 'wsl';
+        d.innerHTML = '<label for="ws-' + i + '">Уклон ската у стены ' + letter(i) + '→' + letter((i + 1) % n) + ', °</label><input class="inp" id="ws-' + i + '" data-wslope="' + i + '" type="text" inputmode="decimal" autocomplete="off" placeholder="' + esc(P.angleMode === 'h' ? String(Math.round(degFromHeight(P) * 10) / 10).replace('.', ',') : (P.angle || '')) + '" value="' + esc(w.a || '') + '">';
+        rows[i].parentNode.insertBefore(d, rows[i].nextSibling);
+      });
+    }
+  }
+  function wallStatus() {
+    var tp = tracePoly(P.walls), el = $('wallStatus'), txt, ok = false;
+    if (tp.closed) { ok = true; txt = '✓ Контур замкнут · площадь по стенам ' + fmt(Math.abs(area2(tp.pts)), 1) + ' м²'; }
+    else if (tp.err !== 'open') txt = tp.err;
+    else {
+      var gx = tp.gap[0], gy = tp.gap[1], parts = [];
+      if (Math.abs(gx) > 0.004) parts.push(fmt(Math.abs(gx), 2) + ' м ' + (gx > 0 ? '←' : '→'));
+      if (Math.abs(gy) > 0.004) parts.push(fmt(Math.abs(gy), 2) + ' м ' + (gy > 0 ? '↑' : '↓'));
+      txt = parts.length ? 'Контур не замкнут: до точки A не хватает ' + parts.join(' и ') : 'Нужно минимум 4 стены.';
+    }
+    el.textContent = txt; el.className = 'wstat ' + (ok ? 'ok' : 'bad');
+    $('btnClose').hidden = ok || !(tp.err === 'open' && P.walls && P.walls.length >= 2);
+  }
+  function closeWalls() {
+    var tp = tracePoly(P.walls), gx = tp.gap[0], gy = tp.gap[1];
+    var Hw = Math.abs(gx) > 0.004 ? { d: gx > 0 ? 'L' : 'R', len: m2s(Math.abs(gx)) } : null;
+    var Vw = Math.abs(gy) > 0.004 ? { d: gy > 0 ? 'U' : 'D', len: m2s(Math.abs(gy)) } : null;
+    var valid = (P.walls || []).filter(function (w) { return wlen(w.len) > 0; }), last = valid.length ? valid[valid.length - 1].d : '';
+    var add = (last === 'L' || last === 'R') ? [Vw, Hw] : [Hw, Vw];
+    add.filter(Boolean).forEach(function (w) { P.walls.push(w); });
+    if (!tracePoly(P.walls).closed) toast('Проверьте последние стены');
+  }
+
   /* ---------- вкладка «Объект» ---------- */
   function fillObject() {
-    ['client', 'phone', 'address', 'angle', 'overhang', 'length', 'width', 'perimeter', 'insulThick', 'drains', 'drainH', 'waste'].forEach(function (f) {
+    if (!P.angleMode) P.angleMode = 'deg';
+    ['client', 'phone', 'address', 'angle', 'ridgeH', 'overhang', 'hipAngle', 'length', 'width', 'perimeter', 'insulThick', 'drains', 'drainH', 'waste'].forEach(function (f) {
       var el = $('f-' + f); if (el && document.activeElement !== el) el.value = P[f] == null ? '' : P[f];
     });
-    ['manualLen', 'insulOn', 'drainOn', 'soffitOn', 'laborOn'].forEach(function (f) { var el = $('f-' + f); if (el) el.checked = !!P[f]; });
+    ['manualLen', 'insulOn', 'drainOn', 'soffitOn', 'laborOn', 'wallSlopes'].forEach(function (f) { var el = $('f-' + f); if (el) el.checked = !!P[f]; });
     renderRects();
+    if (!P.walls) P.walls = preset('g');
+    renderWalls();
   }
 
   function renderRects() {
@@ -753,11 +1708,29 @@ textarea.inp { min-height: 90px; font-size: 13px; font-family: ui-monospace, Men
     Array.prototype.forEach.call(document.querySelectorAll('[data-act="seg"]'), function (b) {
       b.setAttribute('aria-pressed', P[b.getAttribute('data-f')] === b.getAttribute('data-val') ? 'true' : 'false');
     });
-    $('simpleDims').hidden = complex;
+    var isPlan = P.roofType === 'plan';
+    $('simpleDims').hidden = complex || isPlan;
     $('complexDims').hidden = !complex;
+    $('planDims').hidden = !isPlan;
+    if (isPlan) wallStatus();
+    $('planCard').hidden = complex;
+    $('hipAngleBox').hidden = P.roofType !== 'hip';
+    var hMode = P.angleMode === 'h';
+    $('ridgeHBox').hidden = !hMode; $('angleBox').hidden = hMode;
+    $('degHint').textContent = hMode
+      ? (g.ok ? 'Уклон получается ' + fmt(g.deg, 1) + '°' + (P.roofType === 'shed' ? ' (высота — разница между высокой и низкой стеной).' : '.') : '')
+      : '';
+    $('g-hint').textContent = g.R && g.R.mixed
+      ? 'Уклоны разные: площадь посчитана по каждому скату отдельно (площадь ската по плану ÷ cos его уклона).'
+      : 'Площадь скатов = площадь по плану ÷ cos(уклон). Формула точная, когда все скаты имеют одинаковый уклон.';
+    var ae = document.activeElement;
+    if (!$('ovBox').hidden && !(ae && ae.getAttribute && ae.getAttribute('data-ov'))) renderOv(g);
+    $('btnOv').textContent = (g.R2 && g.R2.anyOv ? '✎ Ручные правки (есть)' : '✎ Исправить размеры вручную');
+    if (!complex) { $('plan2d').innerHTML = planSVG(P); $('planInfo').innerHTML = planInfo(P, g); }
     $('lblLength').textContent = P.roofType === 'gable' ? 'Длина вдоль конька, м' : 'Длина, м';
     $('lblWidth').textContent = P.roofType === 'shed' ? 'Ширина (по скату), м' : 'Ширина, м';
 
+    $('roof3d').innerHTML = roofSVG(P, 'o');
     $('g-area').textContent = g.ok ? fmt(g.area, 1) + ' м²' : '—';
     $('g-plan').textContent = g.ok ? fmt(g.plan, 1) + ' м²' : '—';
     $('g-rise').textContent = g.ok && g.rise != null ? fmt(g.rise, 2) + ' м' : '—';
@@ -776,7 +1749,7 @@ textarea.inp { min-height: 90px; font-size: 13px; font-family: ui-monospace, Men
     });
     $('lenHint').textContent = complex
       ? 'Сложная кровля: снимите длины с чертежа. Карниз без значения = периметр стен + 8 × свес.'
-      : (manual ? 'Значения заданы вручную.' : 'Посчитано по размерам с учётом свеса. Включите «вручную», чтобы поправить.');
+      : (manual ? 'Значения заданы вручную.' : (isPlan ? 'Посчитано по контуру и плану кровли с учётом свеса и уклона.' : 'Посчитано по размерам с учётом свеса.') + ' Включите «вручную», чтобы поправить.');
 
     $('insulBox').hidden = !P.insulOn;
     $('drainBox').hidden = !P.drainOn;
@@ -809,7 +1782,9 @@ textarea.inp { min-height: 90px; font-size: 13px; font-family: ui-monospace, Men
       '<div class="doc-meta">' + (P.client ? 'Заказчик: ' + esc(P.client) + (P.phone ? ', ' + esc(P.phone) : '') + '<br>' : '') +
       (P.address ? 'Адрес: ' + esc(P.address) + '<br>' : '') +
       'Кровля ' + ROOF[P.roofType] + ', ' + COVER[P.cover] + ', уклон ' + fmt(g.deg, 1) + '°' +
-      (g.ok ? ', площадь скатов ' + fmt(g.area, 1) + ' м²' : '') + '</div></div>';
+      (g.ok ? ', площадь скатов ' + fmt(g.area, 1) + ' м²' : '') + '</div></div>' +
+      (g.ok ? '<div class="r3d r3d-q">' + roofSVG(P, 'q') + '</div>' : '') +
+      (g.ok && P.roofType !== 'complex' ? '<div class="plan2d plan-q">' + planSVG(P) + '</div>' : '');
 
     if (!g.ok) {
       $('quote').innerHTML = head + '<div class="empty"><strong>Нет данных для расчёта</strong>' + esc(g.warn) + ' Откройте вкладку «Объект».</div>';
@@ -977,6 +1952,7 @@ textarea.inp { min-height: 90px; font-size: 13px; font-family: ui-monospace, Men
     var act = btn.getAttribute('data-act'), id = btn.getAttribute('data-id');
 
     if (act === 'tab') { showTab(btn.getAttribute('data-tab')); return; }
+    if (act === 'rot') { viewIdx = (viewIdx + 1) % VIEWS.length; $('roof3d').innerHTML = roofSVG(P, 'o'); return; }
     if (act === 'seg') {
       var f = btn.getAttribute('data-f'), val = btn.getAttribute('data-val');
       if (f === 'roofType' && val === 'complex' && P.roofType !== 'complex') {
@@ -985,8 +1961,25 @@ textarea.inp { min-height: 90px; font-size: 13px; font-family: ui-monospace, Men
         var g0 = geometry(P);
         LEN_KEYS.forEach(function (k) { if (P.len[k] === '' && g0.ok) P.len[k] = String(g0.auto[k]).replace('.', ','); });
       }
+      if (f === 'roofType' && val === 'plan' && !P.walls) P.walls = preset('g');
       P[f] = val; saveDraft(); fillObject(); updateObject(); return;
     }
+    if (act === 'lov') { focusOv(btn.getAttribute('data-key')); return; }
+    if (act === 'ovtoggle') { $('ovBox').hidden = !$('ovBox').hidden; if (!$('ovBox').hidden) renderOv(geometry(P)); return; }
+    if (act === 'ovreset') {
+      if (!armed(btn, 'Точно сбросить?')) return;
+      P.lineOv = {}; saveDraft(); updateObject(); renderOv(geometry(P)); toast('Правки сброшены'); return;
+    }
+    if (act === 'wpreset') { P.walls = preset(btn.getAttribute('data-k')); renderWalls(); updateObject(); saveDraft(); return; }
+    if (act === 'wdir') { P.walls[num(btn.getAttribute('data-i'))].d = btn.getAttribute('data-d'); renderWalls(); updateObject(); saveDraft(); return; }
+    if (act === 'wdel') { P.walls.splice(num(btn.getAttribute('data-i')), 1); renderWalls(); updateObject(); saveDraft(); return; }
+    if (act === 'wadd') {
+      var lw = P.walls[P.walls.length - 1];
+      P.walls.push({ d: lw ? TURN[lw.d] : 'R', len: '' }); renderWalls(); updateObject(); saveDraft();
+      var nw = $('w-' + (P.walls.length - 1)); if (nw) nw.focus();
+      return;
+    }
+    if (act === 'wclose') { closeWalls(); renderWalls(); updateObject(); saveDraft(); return; }
     if (act === 'rect-add') { P.rects.push({ l: '', w: '' }); renderRects(); saveDraft(); var n = P.rects.length - 1; if ($('r-l-' + n)) $('r-l-' + n).focus(); return; }
     if (act === 'rect-del') { P.rects.splice(num(btn.getAttribute('data-i')), 1); renderRects(); updateObject(); saveDraft(); return; }
     if (act === 'new') {
@@ -1062,8 +2055,12 @@ textarea.inp { min-height: 90px; font-size: 13px; font-family: ui-monospace, Men
 
   function onInput(e) {
     var el = e.target, f = el.getAttribute('data-f');
+    // текстовые поля уже обработаны событием input; повторная перерисовка на change
+    // (при уходе из поля) съела бы нажатие на число в плане
+    if (e.type === 'change' && (el.type === 'text' || el.type === 'tel') && !el.getAttribute('data-p')) return;
     if (f) {
       P[f] = el.type === 'checkbox' ? el.checked : el.value;
+      if (f === 'wallSlopes') renderWalls();
       if (f === 'manualLen' && el.checked) {
         var g = geometry(P);
         LEN_KEYS.forEach(function (k) { P.len[k] = g.ok ? String(g.auto[k]).replace('.', ',') : ''; });
@@ -1074,6 +2071,17 @@ textarea.inp { min-height: 90px; font-size: 13px; font-family: ui-monospace, Men
     }
     var lk = el.getAttribute('data-len');
     if (lk) { P.len[lk] = el.value; saveDraft(); updateObject(); return; }
+    var ok2 = el.getAttribute('data-ov');
+    if (ok2) {
+      if (!P.lineOv) P.lineOv = {};
+      if (el.value.trim() === '') delete P.lineOv[ok2]; else P.lineOv[ok2] = el.value;
+      el.classList.toggle('changed', el.value.trim() !== '');
+      saveDraft(); updateObject(); return;
+    }
+    var wsl = el.getAttribute('data-wslope');
+    if (wsl != null) { P.walls[num(wsl)].a = el.value; saveDraft(); updateObject(); return; }
+    var wi = el.getAttribute('data-wall');
+    if (wi != null) { P.walls[num(wi)].len = el.value; saveDraft(); updateObject(); return; }
     var ri = el.getAttribute('data-rect');
     if (ri != null) { P.rects[num(ri)][el.getAttribute('data-k')] = el.value; saveDraft(); updateObject(); return; }
     var q = el.getAttribute('data-q');
@@ -1120,7 +2128,7 @@ textarea.inp { min-height: 90px; font-size: 13px; font-family: ui-monospace, Men
   }
 
   // для тестов
-  window.KRV = { geometry: geometry, compute: compute, state: function () { return P; } };
+  window.KRV = { geometry: geometry, compute: compute, roofSVG: roofSVG, state: function () { return P; } };
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
 })();
