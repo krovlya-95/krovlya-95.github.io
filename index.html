@@ -712,6 +712,8 @@ textarea.inp { min-height: 90px; font-size: 13px; font-family: ui-monospace, Men
   var catalog = lsGet(KEY.cat, null) || defaultCatalog();
   var company = lsGet(KEY.co, null) || defaultCompany();
   var P = lsGet(KEY.proj, null) || newProject();
+  // черновик (ещё не в архиве) всегда с сегодняшней датой; сохранённая смета хранит свою
+  if (!P.savedId) P.date = today();
   var tab = lsGet(KEY.tab, 'object');
   var openPriceId = null;
 
